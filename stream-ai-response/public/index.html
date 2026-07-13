@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Streaming Gemini to Frontend</title>
+</head>
+
+<body>
+
+  <!-- public/index.html -->
+  <textarea id="prompt" placeholder="Enter prompt..."></textarea>
+  <button onclick="stream()">Generate</button>
+  <div id="output" style="white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; margin-top: 10px;"></div>
+
+  <script>
+    async function stream() {
+      const output = document.getElementById('output');
+      output.innerText = ""; // Clear previous
+
+      const response = await fetch('/api/stream', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: document.getElementById('prompt').value })
+      });
+
+      // 1. Get the reader
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+
+      // 2. Read the stream
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        // 3. Decode chunk and update UI
+        output.innerText += decoder.decode(value, { stream: true });
+      }
+    }
+  </script>
+
+</body>
+
+</html>
