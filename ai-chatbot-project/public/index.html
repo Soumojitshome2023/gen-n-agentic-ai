@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>AI Chatbot</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: sans-serif;
+    }
+
+    #chatbox {
+      height: 400px;
+      width: 80%;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+
+    .msg {
+      margin: 5px;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 70%;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #e3f2fd;
+    }
+
+    .ai {
+      align-self: flex-start;
+      background: #f1f8e9;
+    }
+
+    #loader {
+      display: none;
+      color: #888;
+      font-style: italic;
+      margin: 5px;
+    }
+
+    .input-area {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      width: 80%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="chatbox"></div>
+  <div id="loader">AI is thinking...</div>
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Ask something...">
+    <button id="sendBtn" onclick="sendMsg()">Send</button>
+  </div>
+
+  <script>
+    async function sendMsg() {
+      const input = document.getElementById('userInput');
+      const chatbox = document.getElementById('chatbox');
+      const loader = document.getElementById('loader');
+      const btn = document.getElementById('sendBtn');
+      const msg = input.value;
+
+      if (!msg) return;
+
+      chatbox.innerHTML += `<div class="msg user">${msg}</div>`;
+      input.value = '';
+      loader.style.display = 'block';
+      btn.disabled = true;
+
+      const res = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg })
+      });
+      const data = await res.json();
+
+      loader.style.display = 'none';
+      btn.disabled = false;
+      chatbox.innerHTML += `<div class="msg ai">${data.response}</div>`;
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+  </script>
+</body>
+
+</html>
