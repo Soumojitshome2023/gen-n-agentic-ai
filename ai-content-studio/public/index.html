@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <h1>AI Content Studio</h1>
+  <textarea id="topic" placeholder="Enter blog topic..."></textarea>
+  <button onclick="generate()">Generate Blog Post</button>
+  <div id="loader" style="display: none; color: blue;">Generating content...</div>
+  <div id="output">
+    <h2 id="title"></h2>
+    <img id="image" style="max-width: 200px;" />
+    <p id="body"></p>
+  </div>
+  <script>
+    async function generate() {
+      const topic = document.getElementById("topic").value;
+      document.getElementById("loader").style.display = "block";
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic })
+      });
+      const data = await res.json();
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("title").innerText = data.title;
+      document.getElementById("body").innerText = data.body;
+      document.getElementById("image").src = data.image;
+    }
+  </script>
+</body>
+
+</html>
