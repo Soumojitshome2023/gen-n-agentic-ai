@@ -35,12 +35,19 @@ import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import "dotenv/config";
 
-// ===============================
-// App Setup
-// ===============================
 const app = express();
 app.use(express.json());
 app.use(express.static("public"));
+
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  PORT: 3000,
+  
+  // Model Settings
+  CHAT_MODEL: "gemini-3.1-flash-lite",
+};
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -341,7 +348,7 @@ app.post("/chat", async (req, res) => {
     // Initialize Gemini model WITH tool definitions
     // By passing tools, Gemini knows what functions are available
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.1-flash-lite",
+      model: CONFIG.CHAT_MODEL,
       tools: tools,
     });
 
@@ -455,6 +462,6 @@ app.get("/tools", (req, res) => {
 // ===============================
 // Start Server
 // ===============================
-app.listen(3000, () =>
-  console.log("🔧 Gemini Tool Calling running at http://localhost:3000")
+app.listen(CONFIG.PORT, () =>
+  console.log(`🔧 Gemini Tool Calling running at http://localhost:${CONFIG.PORT}`)
 );

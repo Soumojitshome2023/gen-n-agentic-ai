@@ -34,22 +34,43 @@ app.use(express.static("public"));
 
 const upload = multer({ dest: "uploads/" });
 
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  PORT: 3000,
+  
+  // Model Settings
+  CHAT_MODEL: "gemini-3.1-flash-lite",
+  EMBEDDING_MODEL: "gemini-embedding-2",
+  EMBEDDING_DIMENSION: 1024,
+  TEMPERATURE: 0.2,
+  
+  // Text Chunking Settings
+  CHUNK_SIZE: 500,
+  CHUNK_OVERLAP: 50,
+  
+  // Retrieval Settings
+  TOP_K: 3,
+  MAX_HISTORY: 20,
+};
+
 // ===============================
 // LangChain & Pinecone Setup
 // ===============================
 
 // Initialize LangChain Gemini model
 const chatModel = new ChatGoogleGenerativeAI({
-  model: "gemini-3.1-flash-lite",
+  model: CONFIG.CHAT_MODEL,
   apiKey: process.env.GEMINI_API_KEY,
-  temperature: 0.2, // Low temperature for factual RAG answers
+  temperature: CONFIG.TEMPERATURE,
 });
 
 // Initialize LangChain Embeddings
 const embeddings = new GoogleGenerativeAIEmbeddings({
   apiKey: process.env.GEMINI_API_KEY,
-  modelName: "gemini-embedding-2",
-  outputDimensionality: 1024, // Matches the Pinecone index dimensions (1024)
+  modelName: CONFIG.EMBEDDING_MODEL,
+  outputDimensionality: CONFIG.EMBEDDING_DIMENSION,
 });
 
 // Initialize Pinecone Client
@@ -88,8 +109,8 @@ app.post("/upload", upload.single("pdf"), async (req, res) => {
     // line breaks (\n), spaces, and then characters in order.
     // This preserves semantically related sentences in the same chunk.
     const splitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 500,
-      chunkOverlap: 50,
+      chunkSize: CONFIG.CHUNK_SIZE,
+      chunkOverlap: CONFIG.CHUNK_OVERLAP,
     });
 
     console.log("✂️ Splitting PDF text recursively...");
@@ -107,7 +128,7 @@ app.post("/upload", upload.single("pdf"), async (req, res) => {
     for (let i = 0; i < docs.length; i++) {
       // Call GoogleGenAIEmbeddings to generate a 512-dim vector
       // Direct embedding call via LangChain client
-      const embedding = (await embeddings.embedQuery(docs[i].pageContent)).slice(0, 1024);
+      const embedding = (await embeddings.embedQuery(docs[i].pageContent)).slice(0, CONFIG.EMBEDDING_DIMENSION);
 
       records.push({
         id: `lc-chunk-${Date.now()}-${i}`,
@@ -156,12 +177,12 @@ app.post("/chat", async (req, res) => {
     }
 
     // 1. Embed the user query
-    const queryEmbedding = (await embeddings.embedQuery(message)).slice(0, 1024);
+    const queryEmbedding = (await embeddings.embedQuery(message)).slice(0, CONFIG.EMBEDDING_DIMENSION);
 
     // 2. Query Pinecone for relevant documents
     const queryResult = await index.query({
       vector: queryEmbedding,
-      topK: 3,
+      topK: CONFIG.TOP_K,
       includeMetadata: true,
     });
 
@@ -233,7 +254,7 @@ app.post("/chat", async (req, res) => {
 // Helper to manage memory array
 function chatMemoryAdd(role, content) {
   chatHistory.push({ role, content });
-  if (chatHistory.length > 20) chatHistory.shift(); // Limit history to last 10 turns
+  if (chatHistory.length > CONFIG.MAX_HISTORY) chatHistory.shift(); // Limit history list length
 }
 
 // ===============================
@@ -253,6 +274,6 @@ app.delete("/clear", async (req, res) => {
 // ===============================
 // Start Server
 // ===============================
-app.listen(3000, () =>
-  console.log("🦜 LangChain PDF Assistant running at http://localhost:3000")
+app.listen(CONFIG.PORT, () =>
+  console.log(`🦜 LangChain PDF Assistant running at http://localhost:${CONFIG.PORT}`)
 );

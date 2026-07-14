@@ -28,12 +28,21 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  PORT: 3000,
+  MODEL_NAME: "gemini-3.1-flash-lite",
+  TEMPERATURE: 0.7,
+};
+
 // Initialize the LangChain Gemini model client
 // Uses GEMINI_API_KEY environment variable automatically
 const model = new ChatGoogleGenerativeAI({
-  model: "gemini-3.1-flash-lite",
+  model: CONFIG.MODEL_NAME,
   apiKey: process.env.GEMINI_API_KEY,
-  temperature: 0.7,
+  temperature: CONFIG.TEMPERATURE,
 });
 
 // ============================================================================
@@ -297,6 +306,6 @@ app.post("/api/agent", async (req, res) => {
 // ===============================
 // Start Server
 // ===============================
-app.listen(3000, () =>
-  console.log("🦜 LangChain Orchestrator running at http://localhost:3000")
+app.listen(CONFIG.PORT, () =>
+  console.log(`🦜 LangChain Orchestrator running at http://localhost:${CONFIG.PORT}`)
 );

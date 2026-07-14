@@ -1,6 +1,13 @@
 import { Pinecone } from "@pinecone-database/pinecone";
 import "dotenv/config";
 
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  TOP_K: 3,
+};
+
 // ===============================
 // Pinecone Connection
 // ===============================
@@ -59,7 +66,7 @@ async function searchStudent() {
 
   const result = await index.query({
     vector: queryVector,
-    topK: 3,
+    topK: CONFIG.TOP_K,
     includeMetadata: true,
   });
 

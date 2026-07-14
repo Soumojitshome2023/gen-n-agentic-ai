@@ -6,6 +6,15 @@ import "dotenv/config";
 
 const app = express();
 const upload = multer({ dest: "uploads/" });
+
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  PORT: 3000,
+  MODEL_NAME: "gemini-3.1-flash-lite",
+};
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Helper function to convert local files to Gemini expected format
@@ -22,7 +31,7 @@ app.use(express.static("public"));
 
 app.post("/analyze", upload.single("image"), async (req, res) => {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
+    const model = genAI.getGenerativeModel({ model: CONFIG.MODEL_NAME });
     const imagePart = fileToGenerativePart(req.file.path, req.file.mimetype);
 
     const prompt = "Analyze this image in detail and provide a comprehensive description.";
@@ -37,4 +46,4 @@ app.post("/analyze", upload.single("image"), async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Vision Assistant running at http://localhost:3000"));
+app.listen(CONFIG.PORT, () => console.log(`Vision Assistant running at http://localhost:${CONFIG.PORT}`));

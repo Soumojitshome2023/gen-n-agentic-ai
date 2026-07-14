@@ -34,15 +34,31 @@ import { GoogleGenerativeAI } from "@google/generative-ai";  // Gemini SDK for c
 import { Pinecone } from "@pinecone-database/pinecone";      // Pinecone vector database client
 import "dotenv/config";                 // Auto-loads .env file into process.env
 
-// ===============================
-// App Setup
-// ===============================
 const app = express();
 app.use(express.json());               // Parse incoming JSON request bodies
 app.use(express.static("public"));     // Serve frontend files from /public folder
 
 // Multer config: saves uploaded files to /uploads folder temporarily
 const upload = multer({ dest: "uploads/" });
+
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  PORT: 3000,
+  
+  // Model Settings
+  CHAT_MODEL: "gemini-3.1-flash-lite",
+  EMBEDDING_MODEL: "gemini-embedding-2",
+  EMBEDDING_DIMENSION: 512,
+  
+  // Text Chunking Settings
+  CHUNK_SIZE: 500,
+  CHUNK_OVERLAP: 50,
+  
+  // Retrieval Settings
+  TOP_K: 3,
+};
 
 // ===============================
 // AI & Vector DB Connections
@@ -81,7 +97,7 @@ let chatHistory = [];
 // Example: "The quick brown fox jumps over the lazy dog..."
 // Chunk 1: chars 0-499    → "The quick brown fox..."
 // Chunk 2: chars 450-949  → "...fox jumps over the lazy dog..." (overlaps 50 chars)
-function chunkText(text, chunkSize = 500, overlap = 50) {
+function chunkText(text, chunkSize = CONFIG.CHUNK_SIZE, overlap = CONFIG.CHUNK_OVERLAP) {
   const chunks = [];
   let start = 0;
 
@@ -120,14 +136,14 @@ function chunkText(text, chunkSize = 500, overlap = 50) {
 // for a good balance of accuracy and speed. Your Pinecone index must match!
 async function getEmbedding(text) {
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:embedContent?key=${process.env.GEMINI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1/models/${CONFIG.EMBEDDING_MODEL}:embedContent?key=${process.env.GEMINI_API_KEY}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "gemini-embedding-2",
+        model: CONFIG.EMBEDDING_MODEL,
         content: { parts: [{ text }] },
-        outputDimensionality: 512,        // Must match your Pinecone index dimensions
+        outputDimensionality: CONFIG.EMBEDDING_DIMENSION,        // Must match your Pinecone index dimensions
       }),
     }
   );
@@ -233,13 +249,12 @@ app.post("/chat", async (req, res) => {
     // This vector will be compared against all stored chunk vectors
     const questionEmbedding = await getEmbedding(message);
 
-    // STEP 2: Query Pinecone — find the 3 most similar chunks
+    // STEP 2: Query Pinecone — find the relevant chunks
     // Pinecone compares the question vector against all stored chunk vectors
     // using cosine similarity and returns the closest matches
-    // topK: 3 means "return the 3 most relevant chunks"
     const queryResult = await index.query({
       vector: questionEmbedding,
-      topK: 3,
+      topK: CONFIG.TOP_K,
       includeMetadata: true,            // Include the original text in results
     });
 
@@ -270,7 +285,7 @@ INSTRUCTIONS:
     // STEP 5: Send to Gemini with chat history for multi-turn conversation
     // startChat() with history enables follow-up questions like
     // "tell me more about that" or "can you explain point 2?"
-    const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
+    const model = genAI.getGenerativeModel({ model: CONFIG.CHAT_MODEL });
     const chat = model.startChat({ history: chatHistory });
 
     const result = await chat.sendMessage(ragPrompt);
@@ -304,6 +319,6 @@ app.delete("/clear", async (req, res) => {
 // ===============================
 // Start Server
 // ===============================
-app.listen(3000, () =>
-  console.log("📄 AI PDF Assistant running at http://localhost:3000")
+app.listen(CONFIG.PORT, () =>
+  console.log(`📄 AI PDF Assistant running at http://localhost:${CONFIG.PORT}`)
 );

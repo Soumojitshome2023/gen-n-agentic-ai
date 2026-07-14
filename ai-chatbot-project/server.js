@@ -6,13 +6,21 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  PORT: 3000,
+  MODEL_NAME: "gemini-3.1-flash-lite",
+};
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 let chatHistory = [];
 
 app.post("/chat", async (req, res) => {
   try {
     const { message } = req.body;
-    const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
+    const model = genAI.getGenerativeModel({ model: CONFIG.MODEL_NAME });
     const chat = model.startChat({ history: chatHistory });
 
     const result = await chat.sendMessage(message);
@@ -28,4 +36,4 @@ app.post("/chat", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+app.listen(CONFIG.PORT, () => console.log(`Server running on http://localhost:${CONFIG.PORT}`));

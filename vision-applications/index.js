@@ -3,6 +3,13 @@ import "dotenv/config";
 import fs from "fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  MODEL_NAME: "gemini-3.1-flash-lite",
+};
+
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -20,7 +27,7 @@ function fileToGenerativePart(filePath, mimeType) {
 async function analyzeImage(imagePath, mimeType) {
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.1-flash-lite",
+      model: CONFIG.MODEL_NAME,
     });
 
     const imagePart = fileToGenerativePart(imagePath, mimeType);

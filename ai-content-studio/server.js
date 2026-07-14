@@ -7,6 +7,15 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  PORT: 3000,
+  GEMINI_MODEL: "gemini-3.1-flash-lite",
+  HF_MODEL: "black-forest-labs/FLUX.1-schnell",
+};
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const hf = new HfInference(process.env.HF_TOKEN);
 
@@ -14,7 +23,7 @@ app.post("/api/generate", async (req, res) => {
   try {
     const { topic } = req.body;
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.1-flash-lite",
+      model: CONFIG.GEMINI_MODEL,
       generationConfig: { responseMimeType: "application/json" }
     });
 
@@ -23,7 +32,7 @@ app.post("/api/generate", async (req, res) => {
     const content = JSON.parse(result.response.text());
 
     const imageBlob = await hf.textToImage({
-      model: "black-forest-labs/FLUX.1-schnell",
+      model: CONFIG.HF_MODEL,
       // provider: "hf-inference",
       inputs: content.imagePrompt,
     });
@@ -37,4 +46,4 @@ app.post("/api/generate", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Studio running on http://localhost:3000"));
+app.listen(CONFIG.PORT, () => console.log(`Studio running on http://localhost:${CONFIG.PORT}`));

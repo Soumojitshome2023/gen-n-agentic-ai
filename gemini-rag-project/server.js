@@ -41,9 +41,6 @@ import pdf from "pdf-parse/lib/pdf-parse.js";  // Extracts raw text content from
 import { GoogleGenerativeAI } from "@google/generative-ai";  // Gemini SDK for chat generation
 import "dotenv/config";                 // Auto-loads variables from .env file into process.env
 
-// ===============================
-// App Setup
-// ===============================
 const app = express();
 app.use(express.json());               // Enable parsing JSON in request bodies (for /chat route)
 app.use(express.static("public"));     // Serve index.html and other frontend files from /public
@@ -51,6 +48,25 @@ app.use(express.static("public"));     // Serve index.html and other frontend fi
 // Multer config: temporarily saves uploaded PDF files to /uploads directory
 // Files are deleted after processing to save disk space
 const upload = multer({ dest: "uploads/" });
+
+// ==========================================
+// ⚙️ Configuration Settings
+// ==========================================
+const CONFIG = {
+  PORT: 3000,
+  
+  // Model Settings
+  CHAT_MODEL: "gemini-3.1-flash-lite",
+  EMBEDDING_MODEL: "gemini-embedding-2",
+  EMBEDDING_DIMENSION: 512,           // Custom dimension matching project preference
+  
+  // Text Chunking Settings
+  CHUNK_SIZE: 500,
+  CHUNK_OVERLAP: 50,
+  
+  // Retrieval Settings
+  TOP_K: 3,
+};
 
 // ===============================
 // Gemini Setup
@@ -98,7 +114,7 @@ let currentFileName = "";
 // WHY OVERLAP?
 // Without overlap, sentences at chunk boundaries get cut in half.
 // Overlap of 50 chars ensures context isn't lost between chunks.
-function chunkText(text, chunkSize = 500, overlap = 50) {
+function chunkText(text, chunkSize = CONFIG.CHUNK_SIZE, overlap = CONFIG.CHUNK_OVERLAP) {
   const chunks = [];
   let start = 0;
 
@@ -139,15 +155,14 @@ function chunkText(text, chunkSize = 500, overlap = 50) {
 // directly with the correct API version.
 async function getEmbedding(text) {
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1/models/gemini-embedding-2:embedContent?key=${process.env.GEMINI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1/models/${CONFIG.EMBEDDING_MODEL}:embedContent?key=${process.env.GEMINI_API_KEY}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "gemini-embedding-2",
+        model: CONFIG.EMBEDDING_MODEL,
         content: { parts: [{ text }] },
-        // No outputDimensionality specified — uses full 768 dimensions
-        // (ai-pdf-assistant uses 512 to match its Pinecone index)
+        outputDimensionality: CONFIG.EMBEDDING_DIMENSION,
       }),
     }
   );
@@ -211,7 +226,7 @@ function cosineSimilarity(vecA, vecB) {
 // This is O(n) — it checks every chunk. Pinecone uses advanced indexing
 // (HNSW algorithm) to do this much faster for millions of vectors.
 // For small documents (< 1000 chunks), in-memory search is fast enough.
-function searchSimilar(queryEmbedding, topK = 3) {
+function searchSimilar(queryEmbedding, topK = CONFIG.TOP_K) {
   // Calculate similarity score for every chunk in the store
   const scored = vectorStore.map((entry) => ({
     text: entry.text,
@@ -317,10 +332,10 @@ app.post("/chat", async (req, res) => {
     // so we can measure how similar the question is to each chunk
     const questionEmbedding = await getEmbedding(message);
 
-    // STEP 2: Search for the 3 most similar chunks using cosine similarity
+    // STEP 2: Search for the most similar chunks using cosine similarity
     // This is our custom replacement for Pinecone's query() function
     // Each result includes: { text, chunkIndex, score }
-    const results = searchSimilar(questionEmbedding, 3);
+    const results = searchSimilar(questionEmbedding, CONFIG.TOP_K);
 
     // STEP 3: Build context string from the retrieved chunks
     // We format each chunk with its similarity score for transparency
@@ -352,7 +367,7 @@ INSTRUCTIONS:
     // User: "What is chapter 3 about?"
     // AI: "Chapter 3 covers neural networks..."
     // User: "Tell me more about that" ← AI remembers "that" = neural networks
-    const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
+    const model = genAI.getGenerativeModel({ model: CONFIG.CHAT_MODEL });
     const chat = model.startChat({ history: chatHistory });
 
     const result = await chat.sendMessage(ragPrompt);
@@ -411,6 +426,6 @@ app.get("/status", (req, res) => {
 // ===============================
 // Start Server
 // ===============================
-app.listen(3000, () =>
-  console.log("📄 Gemini RAG Project running at http://localhost:3000")
+app.listen(CONFIG.PORT, () =>
+  console.log(`📄 Gemini RAG Project running at http://localhost:${CONFIG.PORT}`)
 );
