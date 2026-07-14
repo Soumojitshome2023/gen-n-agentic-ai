@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **13 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, and **LangChain** — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **14 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, and **LangChain** — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -22,6 +22,7 @@ A hands-on collection of **13 projects** that progressively teach you how to bui
   - [11. Gemini RAG Project](#11--gemini-rag-project)
   - [12. Gemini Tool Calling](#12--gemini-tool-calling)
   - [13. LangChain Orchestrator](#13--langchain-orchestrator)
+  - [14. LangChain PDF Assistant (RAG)](#14--langchain-pdf-assistant-rag)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -47,6 +48,7 @@ This repository is structured as a **learning path** for engineers who want to m
 | RAG (No External DB)       | Gemini RAG Project                            |
 | Tool / Function Calling    | Gemini Tool Calling                           |
 | LLM Orchestration          | LangChain Orchestrator                        |
+| RAG with LangChain & Citations | LangChain PDF Assistant                   |
 
 ---
 
@@ -130,6 +132,13 @@ Generative AI & Agentic AI for Engineers/
 ├── langchain-orchestrator/    # 🦜 LangChain Chains, Memory & Agents
 │   ├── server.js
 │   ├── public/index.html
+│   ├── .env
+│   └── package.json
+│
+├── langchain-pdf-assistant/   # 📄 LangChain + Pinecone RAG with citations
+│   ├── server.js
+│   ├── public/index.html
+│   ├── uploads/
 │   ├── .env
 │   └── package.json
 │
@@ -459,6 +468,34 @@ node server.js
 
 ---
 
+### 14. 📄 LangChain PDF Assistant (RAG)
+
+> **Document Intelligence System with Recursive Splitting, Pinecone, and Citation Tracking**
+
+A professional RAG (Retrieval-Augmented Generation) document intelligence web app built using **LangChain.js**. It parses uploaded PDFs, splits them recursively to preserve semantic context, generates vectors using GoogleGenAIEmbeddings, stores them in Pinecone, and tracks similarity search citations visually in the chat UI.
+
+- **Type:** Web App (Express + Multer + LangChain + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Models:**
+  - `text-embedding-004` (via LangChain's GoogleGenAIEmbeddings)
+  - `gemini-2.0-flash` (via LangChain's ChatGoogleGenerativeAI)
+- **Key Features:**
+  - PDF parser with temporary file cleanup
+  - **Recursive Character Text Splitting** to preserve context
+  - Google GenAI embeddings indexed directly in Pinecone
+  - Strict system prompt with source citation formatting constraints ([Source X])
+  - Clickable citation side card panel linking search results to response badges
+  - Multi-turn conversation state tracking
+
+```bash
+cd langchain-pdf-assistant
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
 ## 📋 Prerequisites
 
 - [**Node.js**](https://nodejs.org/) v18 or higher
@@ -562,6 +599,14 @@ No external database keys needed — vectors are stored in memory.
 GEMINI_API_KEY=your_google_gemini_api_key_here
 ```
 
+### For LangChain RAG projects (`langchain-pdf-assistant`)
+
+```env
+GEMINI_API_KEY=your_google_gemini_api_key_here
+PINECONE_API_KEY=your_pinecone_api_key_here
+PINECONE_INDEX=your_pinecone_index_name
+```
+
 > ⚠️ **Important:** Never commit your `.env` files to version control. They are already listed in `.gitignore`.
 
 ---
@@ -579,6 +624,7 @@ GEMINI_API_KEY=your_google_gemini_api_key_here
 | [pdf-parse](https://www.npmjs.com/package/pdf-parse)             | PDF text extraction                  |
 | [LangChain Core](https://js.langchain.com/)                       | Orchestration core interfaces        |
 | [LangChain Google GenAI](https://js.langchain.com/)               | LangChain Gemini integration         |
+| [LangChain Text Splitters](https://js.langchain.com/)             | Recursive text chunking utilities   |
 | [dotenv](https://github.com/motdotla/dotenv)                     | Environment variable management      |
 
 ---
