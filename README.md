@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **9 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, and **Pinecone** APIs — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **11 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, and **Pinecone** APIs — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -17,7 +17,9 @@ A hands-on collection of **9 projects** that progressively teach you how to buil
   - [6. AI Vision Assistant](#6--ai-vision-assistant)
   - [7. Hugging Face Image Generator](#7--hugging-face-image-generator)
   - [8. AI Content Studio](#8--ai-content-studio)
-  - [9. AI PDF Assistant (Mini Project)](#9--ai-pdf-assistant-mini-project)
+  - [9. Pinecone RAG Demo](#9--pinecone-rag-demo)
+  - [10. AI PDF Assistant (Mini Project)](#10--ai-pdf-assistant-mini-project)
+  - [11. Gemini RAG Project](#11--gemini-rag-project)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -38,7 +40,9 @@ This repository is structured as a **learning path** for engineers who want to m
 | Vision / Multimodal AI      | Vision Applications, AI Vision Assistant       |
 | Image Generation            | Hugging Face Image Generator                  |
 | Multi-API Orchestration     | AI Content Studio                             |
+| Vector Database (CRUD)     | Pinecone RAG Demo                             |
 | RAG / PDF Q&A              | AI PDF Assistant                              |
+| RAG (No External DB)       | Gemini RAG Project                            |
 
 ---
 
@@ -94,7 +98,19 @@ Generative AI & Agentic AI for Engineers/
 │   ├── .env
 │   └── package.json
 │
+├── pinecone-rag-demo/         # 🌲 Pinecone vector DB CRUD operations
+│   ├── index.js
+│   ├── .env
+│   └── package.json
+│
 ├── ai-pdf-assistant/          # 📄 Upload, chunk, index & chat with PDFs
+│   ├── server.js
+│   ├── public/index.html
+│   ├── uploads/
+│   ├── .env
+│   └── package.json
+│
+├── gemini-rag-project/        # 🧠 RAG with in-memory vectors (no external DB)
 │   ├── server.js
 │   ├── public/index.html
 │   ├── uploads/
@@ -285,7 +301,32 @@ node server.js
 
 ---
 
-### 9. 📄 AI PDF Assistant (Mini Project)
+### 9. 🌲 Pinecone RAG Demo
+
+> **Learn Pinecone vector database CRUD operations**
+
+A CLI script that demonstrates how to use **Pinecone** as a vector database. It covers all essential operations — insert, search (similarity), fetch, update, and delete — using student records with 8-dimensional score vectors and metadata.
+
+- **Type:** CLI Script
+- **Entry:** `index.js`
+- **Database:** Pinecone (vector DB)
+- **Key Features:**
+  - Connect to a Pinecone index
+  - Upsert vectors with metadata (name, department)
+  - Similarity search with `topK` results
+  - Fetch records by ID
+  - Update existing vectors
+  - Delete records by ID
+
+```bash
+cd pinecone-rag-demo
+npm install
+node index.js
+```
+
+---
+
+### 10. 📄 AI PDF Assistant (Mini Project)
 
 > **Upload a PDF, chunk it, index it in Pinecone, and chat with it using RAG**
 
@@ -316,12 +357,41 @@ node server.js
 
 ---
 
+### 11. 🧠 Gemini RAG Project
+
+> **RAG pipeline using pure Gemini — no external database needed**
+
+A lightweight RAG system that uses **Gemini embeddings** and an **in-memory vector store** with cosine similarity search. No Pinecone or any external database required — just a Gemini API key. Upload a PDF, and the app chunks it, embeds it, stores vectors in memory, and lets you chat with it.
+
+- **Type:** Web App (Express + Multer + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Models:**
+  - `text-embedding-004` — embedding generation (768 dimensions)
+  - `gemini-2.0-flash` — answer generation with retrieved context
+- **Key Features:**
+  - PDF upload with drag-and-drop
+  - In-memory vector store (no external DB setup)
+  - Cosine similarity search
+  - Source chunk citations with similarity scores
+  - Multi-turn RAG chat
+  - Zero configuration — just add your Gemini API key
+
+```bash
+cd gemini-rag-project
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
 ## 📋 Prerequisites
 
 - [**Node.js**](https://nodejs.org/) v18 or higher
 - [**npm**](https://www.npmjs.com/) (comes with Node.js)
 - A [**Google AI Studio**](https://aistudio.google.com/apikey) API key (for Gemini projects)
 - A [**Hugging Face**](https://huggingface.co/settings/tokens) access token (for image generation projects)
+- A [**Pinecone**](https://app.pinecone.io/) API key (for vector database projects)
 
 ---
 
@@ -387,6 +457,13 @@ GEMINI_API_KEY=your_google_gemini_api_key_here
 HF_TOKEN=your_hugging_face_token_here
 ```
 
+### For Pinecone projects (`pinecone-rag-demo`)
+
+```env
+PINECONE_API_KEY=your_pinecone_api_key_here
+PINECONE_INDEX=demo-index
+```
+
 ### For RAG projects (`ai-pdf-assistant`)
 
 ```env
@@ -396,6 +473,14 @@ PINECONE_INDEX=your_pinecone_index_name
 ```
 
 Get your Pinecone key at → [Pinecone Console](https://app.pinecone.io/)
+
+### For Gemini-only RAG (`gemini-rag-project`)
+
+```env
+GEMINI_API_KEY=your_google_gemini_api_key_here
+```
+
+No external database keys needed — vectors are stored in memory.
 
 > ⚠️ **Important:** Never commit your `.env` files to version control. They are already listed in `.gitignore`.
 
