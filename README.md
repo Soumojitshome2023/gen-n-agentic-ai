@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **11 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, and **Pinecone** APIs — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **12 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, and **Pinecone** APIs — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -20,6 +20,7 @@ A hands-on collection of **11 projects** that progressively teach you how to bui
   - [9. Pinecone RAG Demo](#9--pinecone-rag-demo)
   - [10. AI PDF Assistant (Mini Project)](#10--ai-pdf-assistant-mini-project)
   - [11. Gemini RAG Project](#11--gemini-rag-project)
+  - [12. Gemini Tool Calling](#12--gemini-tool-calling)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -43,6 +44,7 @@ This repository is structured as a **learning path** for engineers who want to m
 | Vector Database (CRUD)     | Pinecone RAG Demo                             |
 | RAG / PDF Q&A              | AI PDF Assistant                              |
 | RAG (No External DB)       | Gemini RAG Project                            |
+| Tool / Function Calling    | Gemini Tool Calling                           |
 
 ---
 
@@ -114,6 +116,12 @@ Generative AI & Agentic AI for Engineers/
 │   ├── server.js
 │   ├── public/index.html
 │   ├── uploads/
+│   ├── .env
+│   └── package.json
+│
+├── gemini-tool-calling/       # 🔧 AI Function Calling with tools
+│   ├── server.js
+│   ├── public/index.html
 │   ├── .env
 │   └── package.json
 │
@@ -378,6 +386,37 @@ A lightweight RAG system that uses **Gemini embeddings** and an **in-memory vect
 
 ```bash
 cd gemini-rag-project
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
+### 12. 🔧 Gemini Tool Calling
+
+> **AI Function Calling — LLM decides which tools to use**
+
+Demonstrates **Gemini’s Function Calling** capability where the AI inspects tool schemas, decides which function to call based on the user’s natural language intent, generates structured arguments, and uses the returned results to produce a final response. Supports **parallel tool calling** (e.g., “Compare weather in Delhi and London” calls `getWeather` twice simultaneously).
+
+- **Type:** Web App (Express + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Model:** `gemini-2.0-flash`
+- **Available Tools:**
+  - `getWeather(location)` — Get current weather for a city
+  - `calculate(expression)` — Evaluate math expressions
+  - `getCurrentTime(timezone)` — Get current time for a timezone
+  - `searchProducts(query)` — Search a simulated product catalog
+- **Key Features:**
+  - Tool definition with JSON schemas
+  - Automatic tool selection by the LLM
+  - Parallel tool calling support
+  - Tool call visualization in the chat UI (args + results)
+  - Multi-turn conversation with tool context
+  - Example prompts for easy testing
+
+```bash
+cd gemini-tool-calling
 npm install
 node server.js
 # Open http://localhost:3000

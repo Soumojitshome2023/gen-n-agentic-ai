@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Tool Calling</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    /* ===== Tool Badges ===== */
+    .tools-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      justify-content: center;
+      max-width: 750px;
+    }
+
+    .tool-badge {
+      background: white;
+      border: 1px solid #e0e0e0;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tool-badge .icon {
+      font-size: 14px;
+    }
+
+    /* ===== Chat Section ===== */
+    .chat-section {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      width: 85%;
+      max-width: 750px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #1a73e8;
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-header h2 {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .btn-clear {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 5px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.3s;
+    }
+
+    .btn-clear:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    #chatbox {
+      height: 450px;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #f8f9fa;
+    }
+
+    .msg {
+      padding: 12px 16px;
+      border-radius: 12px;
+      max-width: 82%;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #e3f2fd;
+      color: #1565c0;
+      border-bottom-right-radius: 4px;
+    }
+
+    .ai {
+      align-self: flex-start;
+      background: #f1f8e9;
+      color: #33691e;
+      border-bottom-left-radius: 4px;
+    }
+
+    .system {
+      align-self: center;
+      background: #fff8e1;
+      color: #f57f17;
+      font-size: 13px;
+      font-style: italic;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    /* ===== Tool Call Display ===== */
+    .tool-call-block {
+      align-self: center;
+      background: #f3e5f5;
+      border: 1px solid #ce93d8;
+      border-radius: 10px;
+      padding: 10px 14px;
+      max-width: 90%;
+      font-size: 13px;
+      color: #6a1b9a;
+    }
+
+    .tool-call-block .tool-header {
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tool-call-block .tool-args {
+      background: rgba(106, 27, 154, 0.08);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-family: 'Consolas', monospace;
+      font-size: 12px;
+      margin-top: 4px;
+      word-break: break-all;
+    }
+
+    .tool-call-block .tool-result {
+      background: rgba(46, 125, 50, 0.08);
+      color: #2e7d32;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-family: 'Consolas', monospace;
+      font-size: 12px;
+      margin-top: 4px;
+      word-break: break-all;
+    }
+
+    #loader {
+      display: none;
+      color: #999;
+      font-style: italic;
+      padding: 6px 16px;
+      font-size: 13px;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 14px;
+      gap: 10px;
+      border-top: 1px solid #eee;
+      background: white;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .input-area input:focus {
+      border-color: #1a73e8;
+    }
+
+    .btn-send {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-send:hover {
+      background: #1557b0;
+    }
+
+    .btn-send:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* ===== Example Prompts ===== */
+    .examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 16px;
+      border-top: 1px solid #eee;
+      background: #fafafa;
+    }
+
+    .examples span {
+      font-size: 11px;
+      color: #888;
+      padding-top: 2px;
+    }
+
+    .example-btn {
+      background: white;
+      border: 1px solid #e0e0e0;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .example-btn:hover {
+      background: #e3f2fd;
+      border-color: #1a73e8;
+      color: #1a73e8;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🔧 Gemini Tool Calling</h1>
+  <p class="subtitle">AI decides which tools to call based on your question</p>
+
+  <!-- Available Tools Bar -->
+  <div class="tools-bar" id="toolsBar">
+    <div class="tool-badge"><span class="icon">🌤️</span> getWeather</div>
+    <div class="tool-badge"><span class="icon">🧮</span> calculate</div>
+    <div class="tool-badge"><span class="icon">🕐</span> getCurrentTime</div>
+    <div class="tool-badge"><span class="icon">🛒</span> searchProducts</div>
+  </div>
+
+  <!-- Chat Section -->
+  <div class="chat-section">
+    <div class="chat-header">
+      <h2>💬 Chat</h2>
+      <button class="btn-clear" onclick="clearChat()">Clear Chat</button>
+    </div>
+    <div id="chatbox">
+      <div class="msg system">Ask me anything! I'll use the right tools to help you.</div>
+    </div>
+    <div id="loader">🔧 AI is thinking & calling tools...</div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Try: What's the weather in Delhi?"
+        onkeydown="if(event.key==='Enter') sendMsg()">
+      <button class="btn-send" id="sendBtn" onclick="sendMsg()">Send</button>
+    </div>
+    <div class="examples">
+      <span>Try:</span>
+      <button class="example-btn" onclick="tryExample(this)">What's the weather in Delhi?</button>
+      <button class="example-btn" onclick="tryExample(this)">Compare weather in Tokyo and London</button>
+      <button class="example-btn" onclick="tryExample(this)">Calculate 15% of 24500</button>
+      <button class="example-btn" onclick="tryExample(this)">What time is it right now?</button>
+      <button class="example-btn" onclick="tryExample(this)">Search for headphones under ₹10000</button>
+      <button class="example-btn" onclick="tryExample(this)">Weather in Mumbai + time in Dubai</button>
+    </div>
+  </div>
+
+  <script>
+    // ===== Send Message =====
+    async function sendMsg() {
+      const input = document.getElementById('userInput');
+      const chatbox = document.getElementById('chatbox');
+      const loader = document.getElementById('loader');
+      const btn = document.getElementById('sendBtn');
+      const msg = input.value.trim();
+
+      if (!msg) return;
+
+      // Show user message
+      chatbox.innerHTML += `<div class="msg user">${escapeHtml(msg)}</div>`;
+      input.value = '';
+      loader.style.display = 'block';
+      btn.disabled = true;
+      chatbox.scrollTop = chatbox.scrollHeight;
+
+      try {
+        const res = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          // Show tool calls (if any were made)
+          if (data.toolCalls && data.toolCalls.length > 0) {
+            data.toolCalls.forEach(tc => {
+              chatbox.innerHTML += `
+                <div class="tool-call-block">
+                  <div class="tool-header">🔧 Tool Called: ${escapeHtml(tc.name)}</div>
+                  <div class="tool-args">📥 Args: ${escapeHtml(JSON.stringify(tc.args))}</div>
+                  <div class="tool-result">📤 Result: ${escapeHtml(JSON.stringify(tc.result))}</div>
+                </div>`;
+            });
+          }
+
+          // Show AI response
+          chatbox.innerHTML += `<div class="msg ai">${escapeHtml(data.response)}</div>`;
+        } else {
+          chatbox.innerHTML += `<div class="msg system">Error: ${escapeHtml(data.error)}</div>`;
+        }
+      } catch (err) {
+        chatbox.innerHTML += `<div class="msg system">Error: ${escapeHtml(err.message)}</div>`;
+      }
+
+      loader.style.display = 'none';
+      btn.disabled = false;
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    // ===== Try Example Prompt =====
+    function tryExample(btn) {
+      document.getElementById('userInput').value = btn.textContent;
+      sendMsg();
+    }
+
+    // ===== Clear Chat =====
+    async function clearChat() {
+      try {
+        await fetch('/clear', { method: 'DELETE' });
+        document.getElementById('chatbox').innerHTML =
+          '<div class="msg system">Chat cleared! Ask me anything.</div>';
+      } catch (err) {
+        alert('Failed to clear: ' + err.message);
+      }
+    }
+
+    // ===== Utility =====
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+
+</html>
