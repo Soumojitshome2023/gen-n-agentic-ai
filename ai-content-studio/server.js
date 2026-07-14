@@ -24,7 +24,7 @@ app.post("/api/generate", async (req, res) => {
 
     const imageBlob = await hf.textToImage({
       model: "black-forest-labs/FLUX.1-schnell",
-      provider: "hf-inference",
+      // provider: "hf-inference",
       inputs: content.imagePrompt,
     });
 
