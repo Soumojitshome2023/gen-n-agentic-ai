@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **12 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, and **Pinecone** APIs — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **13 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, and **LangChain** — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -21,6 +21,7 @@ A hands-on collection of **12 projects** that progressively teach you how to bui
   - [10. AI PDF Assistant (Mini Project)](#10--ai-pdf-assistant-mini-project)
   - [11. Gemini RAG Project](#11--gemini-rag-project)
   - [12. Gemini Tool Calling](#12--gemini-tool-calling)
+  - [13. LangChain Orchestrator](#13--langchain-orchestrator)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -45,6 +46,7 @@ This repository is structured as a **learning path** for engineers who want to m
 | RAG / PDF Q&A              | AI PDF Assistant                              |
 | RAG (No External DB)       | Gemini RAG Project                            |
 | Tool / Function Calling    | Gemini Tool Calling                           |
+| LLM Orchestration          | LangChain Orchestrator                        |
 
 ---
 
@@ -120,6 +122,12 @@ Generative AI & Agentic AI for Engineers/
 │   └── package.json
 │
 ├── gemini-tool-calling/       # 🔧 AI Function Calling with tools
+│   ├── server.js
+│   ├── public/index.html
+│   ├── .env
+│   └── package.json
+│
+├── langchain-orchestrator/    # 🦜 LangChain Chains, Memory & Agents
 │   ├── server.js
 │   ├── public/index.html
 │   ├── .env
@@ -422,6 +430,33 @@ node server.js
 # Open http://localhost:3000
 ```
 
+```
+
+---
+
+### 13. 🦜 LangChain Orchestrator
+
+> **Orchestrate LLM workflows with Chains (LCEL), Memory, and Tool-use Agents**
+
+A complete educational dashboard project to learn the industry-standard orchestration framework **LangChain**. It includes interactive tabs demonstrating three core pillars:
+1. **Chains (LCEL)** — A sequential chain that generates a business name based on user ideas, and automatically pipes the name to generate a matching tagline.
+2. **Memory** — Chat interface displaying live JSON memory state updates showing how conversation history is injected dynamically on every turn.
+3. **Agents & Tools** — A reasoning loop that determines when to trigger custom local tools (exchange rate, founder lookup) to answer multi-step prompts.
+
+- **Type:** Web App (Express + LangChain + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Model:** `gemini-2.0-flash`
+- **Key Modules:**
+  - `@langchain/core` (runnables, prompt templates, message classes)
+  - `@langchain/google-genai` (Gemini chat integration)
+
+```bash
+cd langchain-orchestrator
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
 ---
 
 ## 📋 Prerequisites
@@ -521,6 +556,12 @@ GEMINI_API_KEY=your_google_gemini_api_key_here
 
 No external database keys needed — vectors are stored in memory.
 
+### For LangChain projects (`langchain-orchestrator`)
+
+```env
+GEMINI_API_KEY=your_google_gemini_api_key_here
+```
+
 > ⚠️ **Important:** Never commit your `.env` files to version control. They are already listed in `.gitignore`.
 
 ---
@@ -536,6 +577,8 @@ No external database keys needed — vectors are stored in memory.
 | [Multer](https://github.com/expressjs/multer)                    | File upload middleware               |
 | [Pinecone SDK](https://docs.pinecone.io/)                        | Vector database client               |
 | [pdf-parse](https://www.npmjs.com/package/pdf-parse)             | PDF text extraction                  |
+| [LangChain Core](https://js.langchain.com/)                       | Orchestration core interfaces        |
+| [LangChain Google GenAI](https://js.langchain.com/)               | LangChain Gemini integration         |
 | [dotenv](https://github.com/motdotla/dotenv)                     | Environment variable management      |
 
 ---
