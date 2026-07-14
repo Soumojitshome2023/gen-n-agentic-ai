@@ -1,0 +1,22 @@
+{
+  "name": "ai-pdf-assistant",
+  "version": "1.0.0",
+  "description": "Upload a PDF, chunk it, index in Pinecone, and chat with it using RAG",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "@pinecone-database/pinecone": "^8.0.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0",
+    "multer": "^1.4.5-lts.2",
+    "pdf-parse": "^1.1.1"
+  }
+}

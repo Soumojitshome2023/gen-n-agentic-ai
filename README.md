@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **8 projects** that progressively teach you how to build real-world applications with **Google Gemini** and **Hugging Face** APIs — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **9 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, and **Pinecone** APIs — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -17,6 +17,7 @@ A hands-on collection of **8 projects** that progressively teach you how to buil
   - [6. AI Vision Assistant](#6--ai-vision-assistant)
   - [7. Hugging Face Image Generator](#7--hugging-face-image-generator)
   - [8. AI Content Studio](#8--ai-content-studio)
+  - [9. AI PDF Assistant (Mini Project)](#9--ai-pdf-assistant-mini-project)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -37,6 +38,7 @@ This repository is structured as a **learning path** for engineers who want to m
 | Vision / Multimodal AI      | Vision Applications, AI Vision Assistant       |
 | Image Generation            | Hugging Face Image Generator                  |
 | Multi-API Orchestration     | AI Content Studio                             |
+| RAG / PDF Q&A              | AI PDF Assistant                              |
 
 ---
 
@@ -89,6 +91,13 @@ Generative AI & Agentic AI for Engineers/
 ├── ai-content-studio/         # 🚀 Full-stack blog + image generation
 │   ├── server.js
 │   ├── public/index.html
+│   ├── .env
+│   └── package.json
+│
+├── ai-pdf-assistant/          # 📄 Upload, chunk, index & chat with PDFs
+│   ├── server.js
+│   ├── public/index.html
+│   ├── uploads/
 │   ├── .env
 │   └── package.json
 │
@@ -276,6 +285,37 @@ node server.js
 
 ---
 
+### 9. 📄 AI PDF Assistant (Mini Project)
+
+> **Upload a PDF, chunk it, index it in Pinecone, and chat with it using RAG**
+
+The capstone mini project that brings together **PDF parsing**, **Gemini embeddings**, **Pinecone vector search**, and **Gemini chat** into a complete RAG (Retrieval-Augmented Generation) pipeline. Upload any PDF and ask questions — the AI retrieves relevant chunks and generates accurate, context-aware answers.
+
+- **Type:** Web App (Express + Multer + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Models:**
+  - `text-embedding-004` — embedding generation for chunks & queries
+  - `gemini-2.0-flash` — answer generation with retrieved context
+- **Key Features:**
+  - PDF upload with drag-and-drop
+  - Automatic text extraction and chunking (~500 chars with overlap)
+  - Vector embedding and Pinecone indexing
+  - Semantic similarity search (top-3 retrieval)
+  - RAG-powered multi-turn chat
+  - Clear & reset functionality
+
+**Pinecone Setup:**
+Create an index with **512 dimensions** and **cosine** metric at [Pinecone Console](https://app.pinecone.io/).
+
+```bash
+cd ai-pdf-assistant
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
 ## 📋 Prerequisites
 
 - [**Node.js**](https://nodejs.org/) v18 or higher
@@ -347,6 +387,16 @@ GEMINI_API_KEY=your_google_gemini_api_key_here
 HF_TOKEN=your_hugging_face_token_here
 ```
 
+### For RAG projects (`ai-pdf-assistant`)
+
+```env
+GEMINI_API_KEY=your_google_gemini_api_key_here
+PINECONE_API_KEY=your_pinecone_api_key_here
+PINECONE_INDEX=your_pinecone_index_name
+```
+
+Get your Pinecone key at → [Pinecone Console](https://app.pinecone.io/)
+
 > ⚠️ **Important:** Never commit your `.env` files to version control. They are already listed in `.gitignore`.
 
 ---
@@ -360,6 +410,8 @@ HF_TOKEN=your_hugging_face_token_here
 | [Google Generative AI SDK](https://ai.google.dev/)               | Gemini API client                    |
 | [Hugging Face Inference](https://huggingface.co/docs/inference)  | Image generation API client          |
 | [Multer](https://github.com/expressjs/multer)                    | File upload middleware               |
+| [Pinecone SDK](https://docs.pinecone.io/)                        | Vector database client               |
+| [pdf-parse](https://www.npmjs.com/package/pdf-parse)             | PDF text extraction                  |
 | [dotenv](https://github.com/motdotla/dotenv)                     | Environment variable management      |
 
 ---
