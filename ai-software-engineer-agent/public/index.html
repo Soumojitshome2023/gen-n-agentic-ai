@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Software Engineer Console</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>💻 Multi-Agent AI Software Engineer Console</h1>
+      <p>Paste any code and trigger a collaborative agent inspection graph (Analysis, Security, Optimization, Verification)</p>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace-grid">
+      <!-- Left Panel: Code Workspace -->
+      <div class="panel">
+        <div class="panel-title">Original Code</div>
+        <textarea class="editor-box" id="codeEditor" placeholder="Paste any language code block here..."></textarea>
+        
+        <div class="panel-title" style="border: none; padding: 0;">Corrected Code</div>
+        <textarea class="editor-box corrected-box" id="correctedEditor" placeholder="The verified, optimized code will appear here after analysis..." readonly></textarea>
+        
+        <div style="font-size: 11px; font-weight: bold; color: var(--text-muted); text-transform: uppercase; margin-top: 10px; margin-bottom: 2px;">Test Templates:</div>
+        <div class="examples-bar">
+          <button class="btn-example" onclick="loadExample('python')">Buggy Python Code</button>
+          <button class="btn-example" onclick="loadExample('javascript')">Unoptimized JS Loop</button>
+          <button class="btn-example" onclick="loadExample('cpp')">Vulnerable C++ Memory</button>
+        </div>
+
+        <button class="btn-action" id="analyzeBtn" onclick="runMultiAgentInspection()">Start Multi-Agent Analysis</button>
+      </div>
+
+      <!-- Right Panel: Agents Collaboration Logs -->
+      <div class="panel">
+        <div class="panel-title">👥 Multi-Agent Collaboration Trace</div>
+        
+        <div class="agent-trace">
+          <!-- Agent 1: Static Analyzer -->
+          <div class="agent-card" id="card-analyzer">
+            <div class="agent-header">
+              <span>🔍 Static Analyzer Agent</span>
+              <div class="agent-status" id="status-analyzer">Idle</div>
+            </div>
+            <div class="agent-findings" id="findings-analyzer">Waiting to inspect code syntax and logic...</div>
+          </div>
+
+          <!-- Agent 2: Security Auditor -->
+          <div class="agent-card" id="card-auditor">
+            <div class="agent-header">
+              <span>🛡️ Security Auditor Agent</span>
+              <div class="agent-status" id="status-auditor">Idle</div>
+            </div>
+            <div class="agent-findings" id="findings-auditor">Waiting to inspect safety and memory vulnerabilities...</div>
+          </div>
+
+          <!-- Agent 3: Performance Optimizer -->
+          <div class="agent-card" id="card-optimizer">
+            <div class="agent-header">
+              <span>⚡ Performance Optimizer Agent</span>
+              <div class="agent-status" id="status-optimizer">Idle</div>
+            </div>
+            <div class="agent-findings" id="findings-optimizer">Waiting to search for performance speedups...</div>
+          </div>
+
+          <!-- Agent 4: QA Verifier -->
+          <div class="agent-card" id="card-verifier">
+            <div class="agent-header">
+              <span>✅ QA Verifier Agent</span>
+              <div class="agent-status" id="status-verifier">Idle</div>
+            </div>
+            <div class="agent-findings" id="findings-verifier">Waiting to verify findings and compile change logs...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final Change Report -->
+    <div class="report-card" id="reportCard">
+      <h2>📄 Synthesized Bug Diagnosis & Repair Report</h2>
+      <div class="report-text" id="reportText"></div>
+    </div>
+  </div>
+
+  <script>
+    // Prefill language templates
+    const EXAMPLES = {
+      python: `def calculate_average(numbers):
+    # Bug: Can throw division by zero error if list is empty
+    total = sum(numbers)
+    return total / len(numbers)
+`,
+      javascript: `// Unoptimized and memory leaky array processing
+function processLargeArray(arr) {
+    let result = [];
+    for (let i = 0; i < arr.length; i++) {
+        // Redundant operations inside the loop
+        let item = arr[i];
+        let processed = item * 10 / 5 + 3 - 3;
+        result.push(processed);
+    }
+    return result;
+}`,
+      cpp: `#include <iostream>
+#include <cstring>
+
+void copyBuffer(char* input) {
+    char buffer[10];
+    // Security vulnerability: Unchecked strcpy causes Buffer Overflow
+    std::strcpy(buffer, input);
+    std::cout << "Buffer: " << buffer << std::endl;
+}`
+    };
+
+    function loadExample(lang) {
+      document.getElementById('codeEditor').value = EXAMPLES[lang];
+    }
+
+    // Load initial example
+    window.addEventListener('load', () => loadExample('python'));
+
+    // Trigger the Multi-Agent compilation graph
+    async function runMultiAgentInspection() {
+      const codeVal = document.getElementById('codeEditor').value.trim();
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      const reportCard = document.getElementById('reportCard');
+
+      if (!codeVal) return;
+
+      analyzeBtn.disabled = true;
+      reportCard.style.display = 'none';
+      
+      resetAgentTrace();
+
+      try {
+        // Step 1: Analyzer agent starts
+        setAgentState('analyzer', 'active', 'Analyzing... <div class="spinner"></div>', 'Inspecting syntax structure and logical branches...');
+
+        const res = await fetch('/api/agent/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: codeVal })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        await sleep(1500); // Visual tracing delay
+        setAgentState('analyzer', 'done', 'Done', data.analysis);
+
+        // Step 2: Security agent starts
+        setAgentState('auditor', 'active', 'Auditing... <div class="spinner"></div>', 'Searching buffer structures and check constraints...');
+        await sleep(1500);
+        setAgentState('auditor', 'done', 'Done', data.security);
+
+        // Step 3: Optimizer agent starts
+        setAgentState('optimizer', 'active', 'Optimizing... <div class="spinner"></div>', 'Reviewing iteration scopes and algorithmic complexity...');
+        await sleep(1500);
+        setAgentState('optimizer', 'done', 'Done', data.optimization);
+
+        // Step 4: Verifier agent starts
+        setAgentState('verifier', 'active', 'Verifying... <div class="spinner"></div>', 'Synthesizing recommendations and compiling report...');
+        await sleep(1500);
+        setAgentState('verifier', 'done', 'Done', 'Unified change logs generated.');
+
+        // Render final verified markdown report
+        document.getElementById('reportText').textContent = data.report;
+        document.getElementById('correctedEditor').value = data.correctedCode;
+        reportCard.style.display = 'block';
+
+      } catch (err) {
+        alert('Multi-agent review failed: ' + err.message);
+        resetAgentTrace();
+      } finally {
+        analyzeBtn.disabled = false;
+      }
+    }
+
+    function resetAgentTrace() {
+      const agents = ['analyzer', 'auditor', 'optimizer', 'verifier'];
+      agents.forEach(a => {
+        document.getElementById(`card-${a}`).className = 'agent-card';
+        document.getElementById(`status-${a}`).textContent = 'Idle';
+        document.getElementById(`findings-${a}`).textContent = 'Waiting for process trigger...';
+      });
+      document.getElementById('correctedEditor').value = '';
+    }
+
+    function setAgentState(agentId, className, statusText, findingsText) {
+      document.getElementById(`card-${agentId}`).className = `agent-card ${className}`;
+      document.getElementById(`status-${agentId}`).innerHTML = statusText;
+      document.getElementById(`findings-${agentId}`).textContent = findingsText;
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  </script>
+</body>
+
+</html>

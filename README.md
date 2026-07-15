@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **17 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **18 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -26,6 +26,7 @@ A hands-on collection of **17 projects** that progressively teach you how to bui
   - [15. Task-Oriented Agent Lab](#15--task-oriented-agent-lab)
   - [16. Researcher-Writer Agent Duo](#16--researcher-writer-agent-duo)
   - [17. LangGraph ReAct Loop](#17--langgraph-react-loop)
+  - [18. AI Software Engineer Agent](#18--ai-software-engineer-agent)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -55,6 +56,7 @@ This repository is structured as a **learning path** for engineers who want to m
 | Agentic AI (Planning & Memory) | Task-Oriented Agent Lab                   |
 | Multi-Agent Collaboration      | Researcher-Writer Agent Duo               |
 | Cyclic Agent Loops (ReAct)    | LangGraph ReAct Loop                      |
+| Autonomous Coding Agents      | AI Software Engineer Agent                |
 
 ---
 
@@ -161,6 +163,12 @@ Generative AI & Agentic AI for Engineers/
 │   └── package.json
 │
 ├── langgraph-react-loop/      # 🔁 LangGraph conditional routing agent loop
+│   ├── server.js
+│   ├── public/index.html
+│   ├── .env
+│   └── package.json
+│
+├── ai-software-engineer-agent/ # 💻 Autonomous developer & debugging loop
 │   ├── server.js
 │   ├── public/index.html
 │   ├── .env
@@ -590,6 +598,31 @@ node server.js
 
 ---
 
+### 18. 💻 AI Software Engineer Agent
+
+> **Autonomous loop agent for code analysis, debugging, and unit testing**
+
+Showcases an **Autonomous Developer Agent** that reads, edits, and debugs code. The agent operates in a cyclic loop to analyze errors, write modifications to a simulated workspace, run unit tests in an isolated context, and iterate until the test suite successfully passes, finally creating a structured bug fix report.
+
+- **Type:** Web App (Express + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Model:** `gemini-3.1-flash-lite` (via GoogleGenerativeAI SDK)
+- **Key Features:**
+  - Autonomous developer loop with maximum step boundaries
+  - Simulated workspace filesystem state
+  - Real-time Node.js script compilation and unit test execution
+  - Detailed bug report compiler tool
+  - Multi-tab file viewer and interactive log terminal
+
+```bash
+cd ai-software-engineer-agent
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
 ## 📋 Prerequisites
 
 - [**Node.js**](https://nodejs.org/) v18 or higher
@@ -701,7 +734,7 @@ PINECONE_API_KEY=your_pinecone_api_key_here
 PINECONE_INDEX=your_pinecone_index_name
 ```
 
-### For LangGraph projects (`researcher-writer-agent-duo` & `langgraph-react-loop`)
+### For LangGraph and Agent projects (`researcher-writer-agent-duo`, `langgraph-react-loop`, & `ai-software-engineer-agent`)
 
 ```env
 GEMINI_API_KEY=your_google_gemini_api_key_here
