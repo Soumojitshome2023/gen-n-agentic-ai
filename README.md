@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **14 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, and **LangChain** — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **17 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -23,6 +23,9 @@ A hands-on collection of **14 projects** that progressively teach you how to bui
   - [12. Gemini Tool Calling](#12--gemini-tool-calling)
   - [13. LangChain Orchestrator](#13--langchain-orchestrator)
   - [14. LangChain PDF Assistant (RAG)](#14--langchain-pdf-assistant-rag)
+  - [15. Task-Oriented Agent Lab](#15--task-oriented-agent-lab)
+  - [16. Researcher-Writer Agent Duo](#16--researcher-writer-agent-duo)
+  - [17. LangGraph ReAct Loop](#17--langgraph-react-loop)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -49,6 +52,9 @@ This repository is structured as a **learning path** for engineers who want to m
 | Tool / Function Calling    | Gemini Tool Calling                           |
 | LLM Orchestration          | LangChain Orchestrator                        |
 | RAG with LangChain & Citations | LangChain PDF Assistant                   |
+| Agentic AI (Planning & Memory) | Task-Oriented Agent Lab                   |
+| Multi-Agent Collaboration      | Researcher-Writer Agent Duo               |
+| Cyclic Agent Loops (ReAct)    | LangGraph ReAct Loop                      |
 
 ---
 
@@ -139,6 +145,24 @@ Generative AI & Agentic AI for Engineers/
 │   ├── server.js
 │   ├── public/index.html
 │   ├── uploads/
+│   ├── .env
+│   └── package.json
+│
+├── task-oriented-agent-lab/   # 🤖 Planning, memory, & tool autonomy
+│   ├── server.js
+│   ├── public/index.html
+│   ├── .env
+│   └── package.json
+│
+├── researcher-writer-agent-duo/ # 👥 LangGraph multi-agent collaboration
+│   ├── server.js
+│   ├── public/index.html
+│   ├── .env
+│   └── package.json
+│
+├── langgraph-react-loop/      # 🔁 LangGraph conditional routing agent loop
+│   ├── server.js
+│   ├── public/index.html
 │   ├── .env
 │   └── package.json
 │
@@ -494,6 +518,78 @@ node server.js
 
 ---
 
+### 15. 🤖 Task-Oriented Agent Lab
+
+> **Autonomous planning, execution memory logs, and self-correction simulation**
+
+Demonstrates key principles of **Agentic AI**: Autonomy, Planning, and Memory. The user enters a research goal (e.g., "Research the Pythagorean theorem and calculate the hypotenuse of a right triangle with sides 3 and 4"). The agent uses Gemini in structured JSON mode to build a step-by-step plan, executes it autonomously by dispatching inputs to the live Wikipedia REST API and calculation tools, maintains a running memory log of results, and generates a final report using previous memories.
+
+- **Type:** Web App (Express + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Model:** `gemini-3.1-flash-lite` (in structured JSON mode)
+- **Key Features:**
+  - Dynamic JSON planning engine
+  - Step-by-step execution visualization with live status checks
+  - Working memory store (JSON memory logging)
+  - Calculator and **live Wikipedia REST API search** tool dispatcher
+
+```bash
+cd task-oriented-agent-lab
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
+### 16. 👥 Researcher-Writer Agent Duo
+
+> **Collaborative multi-agent workflows using LangGraph.js**
+
+Showcases **Multi-Agent Collaboration** using stateful graphs. Using **LangGraph.js**, the application structures the workspace into a Directed Acyclic Graph containing nodes (Researcher and Writer agents) and edges. The shared annotated graph state passes topic details to the Researcher agent to fetch fact summaries, which are piped directly to the Writer agent to draft a formatted blog newsletter.
+
+- **Type:** Web App (Express + LangGraph + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Model:** `gemini-3.1-flash-lite` (via LangChain's ChatGoogleGenerativeAI)
+- **Key Features:**
+  - Directed state graph structure (`__start__` -> `researcherNode` -> `writerNode` -> `__end__`)
+  - Stateful shared memory (Annotated properties)
+  - Dual side-by-side agent cards showing check-off states
+  - Graph flow active node highlighting in the UI
+
+```bash
+cd researcher-writer-agent-duo
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
+### 17. 🔁 LangGraph ReAct Loop
+
+> **Stateful reasoning loops with conditional edges and tool executions**
+
+Illustrates the classic **ReAct** (Reasoning and Acting) execution pattern using **LangGraph.js**. The application constructs a cyclic state graph that processes user inputs inside an Agent node, evaluates if a tool call is needed, routes to an Action node via a conditional edge, executes the tool, and loops back to the Agent node recursively until a final text result is generated.
+
+- **Type:** Web App (Express + LangGraph + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Model:** `gemini-3.1-flash-lite` (via LangChain's ChatGoogleGenerativeAI)
+- **Key Features:**
+  - Cyclic state graph loop (`__start__` -> `agentNode` -> conditional edge -> `actionNode` -> `agentNode`)
+  - Shared message history state reducer (`(x, y) => x.concat(y)`)
+  - Safe mathematical evaluation tool
+  - Interactive loop transition highlighting in the UI
+
+```bash
+cd langgraph-react-loop
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
 ## 📋 Prerequisites
 
 - [**Node.js**](https://nodejs.org/) v18 or higher
@@ -605,6 +701,12 @@ PINECONE_API_KEY=your_pinecone_api_key_here
 PINECONE_INDEX=your_pinecone_index_name
 ```
 
+### For LangGraph projects (`researcher-writer-agent-duo` & `langgraph-react-loop`)
+
+```env
+GEMINI_API_KEY=your_google_gemini_api_key_here
+```
+
 > ⚠️ **Important:** Never commit your `.env` files to version control. They are already listed in `.gitignore`.
 
 ---
@@ -623,6 +725,7 @@ PINECONE_INDEX=your_pinecone_index_name
 | [LangChain Core](https://js.langchain.com/)                       | Orchestration core interfaces        |
 | [LangChain Google GenAI](https://js.langchain.com/)               | LangChain Gemini integration         |
 | [LangChain Text Splitters](https://js.langchain.com/)             | Recursive text chunking utilities   |
+| [LangGraph.js](https://js.langchain.com/)                        | Multi-agent graph state workflow    |
 | [dotenv](https://github.com/motdotla/dotenv)                     | Environment variable management      |
 
 ---

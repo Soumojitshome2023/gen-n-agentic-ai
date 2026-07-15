@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Researcher-Writer Agent Duo</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #1f2937;
+      --emerald: #10b981;
+      --pink: #ec4899;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-size: 16px;
+    }
+
+    /* ===== Input area ===== */
+    .input-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 14px 18px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      background: #0b0f19;
+      color: white;
+      transition: all 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn:disabled {
+      background: #374151;
+      cursor: not-allowed;
+    }
+
+    .examples {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .example-btn {
+      background: #0b0f19;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .example-btn:hover {
+      border-color: var(--pink);
+      color: white;
+    }
+
+    /* ===== Flow Visualization ===== */
+    .flow-viz {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 12px;
+      display: none;
+    }
+
+    .node {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #1f2937;
+      color: var(--text-muted);
+      border: 1px dashed var(--border);
+    }
+
+    .node.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+    }
+
+    .arrow {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* ===== Agents Grid ===== */
+    .agents-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      display: none;
+    }
+
+    .agent-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      height: 480px;
+    }
+
+    .agent-card.active {
+      border-color: var(--primary);
+    }
+
+    .agent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .agent-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .agent-status {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #1f2937;
+    }
+
+    .agent-status.working {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+
+    .agent-status.done {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+
+    .agent-body {
+      flex: 1;
+      overflow-y: auto;
+      background: #0b0f19;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .agent-body.notes {
+      color: #38bdf8;
+      white-space: pre-wrap;
+    }
+
+    .agent-body.draft {
+      color: #e2e8f0;
+      white-space: pre-wrap;
+    }
+
+    .loader {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .main-spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(251, 191, 36, 0.2);
+      border-top-color: #fbbf24;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>👥 Researcher-Writer Agent Duo</h1>
+      <p>Stateful Multi-Agent collaboration using LangGraph.js and Google Gemini</p>
+    </header>
+
+    <!-- Input Card -->
+    <div class="input-box">
+      <div class="form-group">
+        <input type="text" id="topicInput" placeholder="Enter a topic for research & newsletter generation (e.g. Web3, Fusion Energy)...">
+        <button class="btn" id="collabBtn" onclick="runGraph()">Start Collaboration</button>
+      </div>
+
+      <!-- Agent Loader -->
+      <div class="agent-loader" id="agentLoader" style="display: none; margin-top: 15px; align-items: center; gap: 10px; color: #fbbf24; font-size: 14px; font-weight: 500;">
+        <span class="main-spinner"></span>
+        <span id="loaderStatusText">Multi-agent cooperation in progress...</span>
+      </div>
+
+      <div class="examples">
+        <button class="example-btn" onclick="setTopic(this)">Future of Quantum Computing</button>
+        <button class="example-btn" onclick="setTopic(this)">Benefits of Sustainable Architecture</button>
+      </div>
+    </div>
+
+    <!-- Graph Visualization -->
+    <div class="flow-viz" id="flowViz">
+      <div class="node" id="node-start">Start</div>
+      <span class="arrow">──▶</span>
+      <div class="node" id="node-researcher">Researcher Node</div>
+      <span class="arrow">──▶</span>
+      <div class="node" id="node-writer">Writer Node</div>
+      <span class="arrow">──▶</span>
+      <div class="node" id="node-end">End</div>
+    </div>
+
+    <!-- Agent workspace cards -->
+    <div class="agents-grid" id="agentsGrid">
+      <!-- Researcher Card -->
+      <div class="agent-card" id="card-researcher">
+        <div class="agent-header">
+          <div class="agent-title">🔍 Researcher Agent</div>
+          <div class="agent-status" id="status-researcher">Idle</div>
+        </div>
+        <div class="agent-body notes" id="notesBox">Researcher is waiting for a topic...</div>
+      </div>
+
+      <!-- Writer Card -->
+      <div class="agent-card" id="card-writer">
+        <div class="agent-header">
+          <div class="agent-title">✍️ Writer Agent</div>
+          <div class="agent-status" id="status-writer">Idle</div>
+        </div>
+        <div class="agent-body draft" id="draftBox">Writer is waiting for research notes...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setTopic(btn) {
+      document.getElementById('topicInput').value = btn.textContent;
+    }
+
+    async function runGraph() {
+      const topicInput = document.getElementById('topicInput');
+      const collabBtn = document.getElementById('collabBtn');
+      const flowViz = document.getElementById('flowViz');
+      const agentsGrid = document.getElementById('agentsGrid');
+      const agentLoader = document.getElementById('agentLoader');
+      const loaderStatusText = document.getElementById('loaderStatusText');
+      const topicVal = topicInput.value.trim();
+
+      if (!topicVal) return;
+
+      collabBtn.disabled = true;
+      agentLoader.style.display = 'flex';
+      loaderStatusText.textContent = 'Researcher Agent is compiling notes...';
+      flowViz.style.display = 'flex';
+      agentsGrid.style.display = 'grid';
+
+      // Reset UI elements
+      resetUI();
+
+      // Step 1: Researcher node is active
+      setActiveNode('researcher');
+      document.getElementById('status-researcher').className = 'agent-status working';
+      document.getElementById('status-researcher').innerHTML = 'Investigating <div class="loader"></div>';
+      document.getElementById('notesBox').textContent = 'Searching database and gathering bulleted insights...';
+
+      try {
+        const res = await fetch('/api/collaborate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic: topicVal })
+        });
+        
+        // Wait a small artificial delay so the user can see the researcher state
+        await sleep(1500);
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error);
+        }
+
+        const data = await res.json();
+
+        // Step 2: Researcher completed, Writer node is active
+        document.getElementById('status-researcher').className = 'agent-status done';
+        document.getElementById('status-researcher').textContent = 'Notes Compiled';
+        document.getElementById('notesBox').textContent = data.researchNotes;
+
+        setActiveNode('writer');
+        loaderStatusText.textContent = 'Writer Agent is drafting newsletter...';
+        document.getElementById('status-writer').className = 'agent-status working';
+        document.getElementById('status-writer').innerHTML = 'Drafting newsletter <div class="loader"></div>';
+        document.getElementById('draftBox').textContent = 'Reading research notes and composing newsletter article...';
+
+        await sleep(1500);
+
+        // Step 3: Writer finished
+        document.getElementById('status-writer').className = 'agent-status done';
+        document.getElementById('status-writer').textContent = 'Draft Finished';
+        document.getElementById('draftBox').textContent = data.draft;
+
+        setActiveNode('end');
+
+      } catch (err) {
+        alert('Multi-agent collaboration failed: ' + err.message);
+        resetUI();
+      } finally {
+        collabBtn.disabled = false;
+        agentLoader.style.display = 'none';
+      }
+    }
+
+    function resetUI() {
+      document.getElementById('node-start').className = 'node';
+      document.getElementById('node-researcher').className = 'node';
+      document.getElementById('node-writer').className = 'node';
+      document.getElementById('node-end').className = 'node';
+
+      document.getElementById('card-researcher').className = 'agent-card';
+      document.getElementById('card-writer').className = 'agent-card';
+
+      document.getElementById('status-researcher').className = 'agent-status';
+      document.getElementById('status-researcher').textContent = 'Idle';
+      document.getElementById('status-writer').className = 'agent-status';
+      document.getElementById('status-writer').textContent = 'Idle';
+
+      document.getElementById('notesBox').textContent = '';
+      document.getElementById('draftBox').textContent = '';
+    }
+
+    function setActiveNode(nodeId) {
+      // Deactivate all nodes and cards
+      document.getElementById('node-start').className = 'node';
+      document.getElementById('node-researcher').className = 'node';
+      document.getElementById('node-writer').className = 'node';
+      document.getElementById('node-end').className = 'node';
+
+      document.getElementById('card-researcher').className = 'agent-card';
+      document.getElementById('card-writer').className = 'agent-card';
+
+      // Activate current
+      document.getElementById(`node-${nodeId}`).className = 'node active';
+      if (nodeId === 'researcher') {
+        document.getElementById('card-researcher').className = 'agent-card active';
+      } else if (nodeId === 'writer') {
+        document.getElementById('card-writer').className = 'agent-card active';
+      }
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  </script>
+</body>
+
+</html>
