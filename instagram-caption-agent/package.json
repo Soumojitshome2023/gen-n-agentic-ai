@@ -1,0 +1,23 @@
+{
+  "name": "instagram-caption-agent",
+  "version": "1.0.0",
+  "description": "Project 19: Instagram Post Caption & Hashtag Generator Agent - A collaborative multi-agent content creation suite.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@langchain/core": "^0.3.0",
+    "@langchain/google-genai": "^0.1.0",
+    "@langchain/langgraph": "^0.0.26",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0",
+    "multer": "^1.4.5-lts.1"
+  }
+}

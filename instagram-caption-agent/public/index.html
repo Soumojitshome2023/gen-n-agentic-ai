@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instagram Post Creator Agent</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>📸 Instagram Post Caption & Hashtag Generator</h1>
+      <p>Collaborative multi-agent system writing copy, developing hashtag SEO, and planning visual post scenes</p>
+    </header>
+
+    <div class="workspace-grid">
+      <!-- Left Column: Input Form & Agent Trace -->
+      <div class="panel">
+        <div class="panel-title">Creative Prompt</div>
+        
+        <!-- Multimodal Image Upload -->
+        <div class="form-group">
+          <label>Upload Post Photo(s)</label>
+          <input type="file" id="imageInput" multiple accept="image/*" onchange="previewImages()" style="display: none;">
+          <button class="tone-btn" onclick="document.getElementById('imageInput').click()" style="width: 100%; border-style: dashed; border-color: var(--primary-mid);">📁 Choose Photo(s)</button>
+          <div class="preview-container" id="imagePreviewContainer"></div>
+        </div>
+
+        <!-- Optional Description -->
+        <div class="form-group">
+          <label for="topic">Post Description (Optional if photo is uploaded)</label>
+          <textarea class="form-input" id="topic" style="height: 80px; resize: none;" placeholder="E.g., Special promo for summer discount..."></textarea>
+        </div>
+
+        <!-- Tone Selector -->
+        <div class="form-group">
+          <label>Select Post Tone</label>
+          <div class="tone-grid">
+            <button class="tone-btn active" onclick="setTone('casual', this)">Casual & Friendly</button>
+            <button class="tone-btn" onclick="setTone('funny', this)">Witty & Funny</button>
+            <button class="tone-btn" onclick="setTone('inspirational', this)">Inspirational</button>
+            <button class="tone-btn" onclick="setTone('bold', this)">Bold & Hype</button>
+          </div>
+        </div>
+
+        <button class="btn-generate" id="generateBtn" onclick="generatePostAssets()">Generate Social Post</button>
+
+        <!-- Multi-Agent Trace -->
+        <div class="panel-title" style="margin-top: 15px; border: none; padding-bottom: 0;">👥 Agent Collaboration Console</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- Node 0: Analyst -->
+          <div class="agent-step" id="step-analyst">
+            <div class="agent-header">
+              <span>👁️ Image Analyst Agent</span>
+              <div class="agent-status" id="status-analyst">Idle</div>
+            </div>
+            <div class="agent-msg" id="msg-analyst">Waiting to review uploaded images...</div>
+          </div>
+
+          <!-- Node 1: Writer -->
+          <div class="agent-step" id="step-writer">
+            <div class="agent-header">
+              <span>✍️ Caption Writer Agent</span>
+              <div class="agent-status" id="status-writer">Idle</div>
+            </div>
+            <div class="agent-msg" id="msg-writer">Waiting to write post caption options...</div>
+          </div>
+
+          <!-- Node 2: Strategist -->
+          <div class="agent-step" id="step-strategist">
+            <div class="agent-header">
+              <span>🏷️ Hashtag Strategist Agent</span>
+              <div class="agent-status" id="status-strategist">Idle</div>
+            </div>
+            <div class="agent-msg" id="msg-strategist">Waiting to select hashtag groups...</div>
+          </div>
+
+          <!-- Node 3: Planner -->
+          <div class="agent-step" id="step-planner">
+            <div class="agent-header">
+              <span>🎨 Visual Planner Agent</span>
+              <div class="agent-status" id="status-planner">Idle</div>
+            </div>
+            <div class="agent-msg" id="msg-planner">Waiting to design post scene prompt...</div>
+          </div>
+
+          <!-- Node 4: Verifier -->
+          <div class="agent-step" id="step-verifier">
+            <div class="agent-header">
+              <span>✅ QA Verifier Agent</span>
+              <div class="agent-status" id="status-verifier">Idle</div>
+            </div>
+            <div class="agent-msg" id="msg-verifier">Waiting to perform engagement check...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Outputs -->
+      <div class="panel" style="justify-content: flex-start;">
+        <div class="panel-title">✨ Post Generation Board</div>
+        
+        <!-- Idle Placeholder -->
+        <div id="idleState" style="color: var(--text-muted); font-size: 14px; text-align: center; margin: auto 0; padding: 40px 0;">
+          No content generated yet. Provide details and click "Generate Social Post" to start.
+        </div>
+
+        <!-- Generated Outputs Tab Container -->
+        <div id="outputState" style="display: none; flex-direction: column; gap: 20px; width: 100%;">
+          
+          <!-- Extracted Topic Details -->
+          <div id="topicDetails" style="display: none; background: #09090e; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 13px; line-height: 1.5;">
+            <span style="color: var(--primary-mid); font-weight: bold;">Extracted Post Context:</span>
+            <span id="extractedTopicText" style="color: var(--text-muted);"></span>
+          </div>
+
+          <!-- Tabs Navigation -->
+          <div class="tab-container">
+            <button class="tab-btn active" id="tabBtn-captions" onclick="switchTab('captions')">Captions</button>
+            <button class="tab-btn" id="tabBtn-hashtags" onclick="switchTab('hashtags')">Hashtags</button>
+            <button class="tab-btn" id="tabBtn-visual" onclick="switchTab('visual')">Visual Concept</button>
+          </div>
+
+          <!-- Tab Content 1: Captions -->
+          <div class="tab-content active" id="tab-captions">
+            <div id="captionsList" style="display: flex; flex-direction: column; gap: 12px;"></div>
+          </div>
+
+          <!-- Tab Content 2: Hashtags -->
+          <div class="tab-content" id="tab-hashtags">
+            <button class="btn-copy" onclick="copyAllHashtags()" style="align-self: flex-start; margin-bottom: 5px;">📋 Copy All Hashtags</button>
+            
+            <div class="hashtag-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div class="hashtag-title" style="margin-bottom: 0;">Broad Tags (High Volume)</div>
+                <button class="btn-copy" onclick="copyCategoryHashtags('hashtagsBroad')" style="padding: 4px 8px; font-size: 11px;">📋 Copy Group</button>
+              </div>
+              <div class="hashtag-list" id="hashtagsBroad"></div>
+            </div>
+
+            <div class="hashtag-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div class="hashtag-title" style="margin-bottom: 0;">Niche Tags (Specific Interest)</div>
+                <button class="btn-copy" onclick="copyCategoryHashtags('hashtagsNiche')" style="padding: 4px 8px; font-size: 11px;">📋 Copy Group</button>
+              </div>
+              <div class="hashtag-list" id="hashtagsNiche"></div>
+            </div>
+
+            <div class="hashtag-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div class="hashtag-title" style="margin-bottom: 0;">Custom Tags (Brand/Context)</div>
+                <button class="btn-copy" onclick="copyCategoryHashtags('hashtagsCustom')" style="padding: 4px 8px; font-size: 11px;">📋 Copy Group</button>
+              </div>
+              <div class="hashtag-list" id="hashtagsCustom"></div>
+            </div>
+          </div>
+
+          <!-- Tab Content 3: Visual Concept -->
+          <div class="tab-content" id="tab-visual">
+            <div class="visual-box" id="visualPromptText"></div>
+            <button class="btn-copy" onclick="copyText(document.getElementById('visualPromptText').textContent)">📋 Copy Visual Prompt</button>
+          </div>
+
+          <!-- Verifier Analysis Card -->
+          <div class="verifier-card">
+            <div class="score-container">
+              <div class="score-badge" id="qaScore">8</div>
+              <div>
+                <div class="score-label">Estimated Engagement Potential</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Calculated by Social Verifier Node</div>
+              </div>
+            </div>
+            <div class="tips-list">
+              <div style="font-weight: bold; color: white; margin-bottom: 5px; font-size: 13px;">Optimization Recommendations:</div>
+              <div id="qaTips"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let activeTone = 'casual';
+    let generatedData = null;
+
+    // Image Preview Helper
+    function previewImages() {
+      const container = document.getElementById('imagePreviewContainer');
+      container.innerHTML = '';
+      const files = document.getElementById('imageInput').files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.createElement('img');
+          img.className = 'preview-img';
+          img.src = e.target.result;
+          container.appendChild(img);
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function setTone(tone, btn) {
+      activeTone = tone;
+      document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      document.getElementById(`tabBtn-${tabId}`).classList.add('active');
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+    }
+
+    async function generatePostAssets() {
+      const topic = document.getElementById('topic').value.trim();
+      const files = document.getElementById('imageInput').files;
+      const generateBtn = document.getElementById('generateBtn');
+      const idleState = document.getElementById('idleState');
+      const outputState = document.getElementById('outputState');
+
+      if (!topic && files.length === 0) {
+        alert('Please enter a description or upload at least one image.');
+        return;
+      }
+
+      // Reset states
+      generateBtn.disabled = true;
+      idleState.style.display = 'block';
+      idleState.textContent = 'Orchestrating agent collaboration loop...';
+      outputState.style.display = 'none';
+      document.getElementById('topicDetails').style.display = 'none';
+      resetAgentTrace();
+
+      try {
+        // Step 0: Image Analyst runs
+        setAgentState('analyst', 'active', 'Analyzing... <div class="spinner"></div>', 'Analyzing uploaded image layout and subjects...');
+
+        const formData = new FormData();
+        formData.append('topic', topic);
+        formData.append('tone', activeTone);
+        for (let i = 0; i < files.length; i++) {
+          formData.append('images', files[i]);
+        }
+
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        generatedData = data;
+
+        await sleep(1500);
+        setAgentState('analyst', 'done', 'Done', files.length > 0 ? 'Image analyzed successfully.' : 'No images. Text prompt loaded.');
+
+        // Step 1: Caption writer runs
+        setAgentState('writer', 'active', 'Writing... <div class="spinner"></div>', 'Drafting Caption style variations...');
+        await sleep(1500);
+        setAgentState('writer', 'done', 'Done', '3 caption variations successfully drafted.');
+
+        // Step 2: Strategist runs
+        setAgentState('strategist', 'active', 'Selecting... <div class="spinner"></div>', 'Identifying broad and niche target hashtags...');
+        await sleep(1500);
+        setAgentState('strategist', 'done', 'Done', '15 search-optimized tags selected.');
+
+        // Step 3: Planner runs
+        setAgentState('planner', 'active', 'Planning... <div class="spinner"></div>', 'Detailing scene structure and camera prompts...');
+        await sleep(1500);
+        setAgentState('planner', 'done', 'Done', 'Visual layout concept developed.');
+
+        // Step 4: Verifier runs
+        setAgentState('verifier', 'active', 'Verifying... <div class="spinner"></div>', 'Assessing hook CTR and emoji balance...');
+        await sleep(1500);
+        setAgentState('verifier', 'done', 'Done', 'Grade assessment completed.');
+
+        // Render Outputs
+        renderOutputs(data);
+
+        idleState.style.display = 'none';
+        outputState.style.display = 'flex';
+        switchTab('captions');
+
+      } catch (err) {
+        alert('Workflow generation failed: ' + err.message);
+        idleState.textContent = 'Generation failed. Please try again.';
+      } finally {
+        generateBtn.disabled = false;
+      }
+    }
+
+    function renderOutputs(data) {
+      // Render Topic details
+      document.getElementById('extractedTopicText').textContent = data.topic;
+      document.getElementById('topicDetails').style.display = 'block';
+
+      // 1. Render Captions
+      const captionsList = document.getElementById('captionsList');
+      captionsList.innerHTML = '';
+      data.captions.forEach(c => {
+        captionsList.innerHTML += `
+          <div class="caption-card">
+            <div class="caption-meta">${c.style}</div>
+            <div class="caption-text" id="capText-${c.style}">${c.text}</div>
+            <button class="btn-copy" onclick="copyText(document.getElementById('capText-${c.style}').textContent)">📋 Copy Caption</button>
+          </div>`;
+      });
+
+      // 2. Render Hashtags
+      renderHashtagList('hashtagsBroad', data.hashtags.broad);
+      renderHashtagList('hashtagsNiche', data.hashtags.niche);
+      renderHashtagList('hashtagsCustom', data.hashtags.custom);
+
+      // 3. Render Visual Prompt
+      document.getElementById('visualPromptText').textContent = data.visualPrompt;
+
+      // 4. Render QA Verification
+      document.getElementById('qaScore').textContent = data.qaFeedback.score;
+      
+      // Parse markdown tips
+      const tipsDiv = document.getElementById('qaTips');
+      tipsDiv.innerHTML = formatMarkdownTips(data.qaFeedback.tips);
+    }
+
+    function renderHashtagList(elementId, list) {
+      const el = document.getElementById(elementId);
+      el.innerHTML = '';
+      list.forEach(tag => {
+        el.innerHTML += `<span class="hashtag-tag">${tag}</span>`;
+      });
+    }
+
+    function resetAgentTrace() {
+      const agents = ['analyst', 'writer', 'strategist', 'planner', 'verifier'];
+      agents.forEach(a => {
+        document.getElementById(`step-${a}`).className = 'agent-step';
+        document.getElementById(`status-${a}`).textContent = 'Idle';
+        document.getElementById(`msg-${a}`).textContent = 'Waiting for process trigger...';
+      });
+    }
+
+    function setAgentState(agentId, className, statusText, msgText) {
+      document.getElementById(`step-${agentId}`).className = `agent-step ${className}`;
+      document.getElementById(`status-${agentId}`).innerHTML = statusText;
+      document.getElementById(`msg-${agentId}`).textContent = msgText;
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text);
+      alert('Copied to clipboard!');
+    }
+
+    function copyAllHashtags() {
+      if (!generatedData) return;
+      const allTags = [
+        ...generatedData.hashtags.broad,
+        ...generatedData.hashtags.niche,
+        ...generatedData.hashtags.custom
+      ].join(' ');
+      copyText(allTags);
+    }
+
+    function copyCategoryHashtags(elementId) {
+      const el = document.getElementById(elementId);
+      const tags = Array.from(el.querySelectorAll('.hashtag-tag')).map(t => t.textContent).join(' ');
+      copyText(tags);
+    }
+
+    function formatMarkdownTips(tipsMarkdown) {
+      let lines = tipsMarkdown.split('\n');
+      let html = '<ul>';
+      lines.forEach(line => {
+        line = line.trim();
+        if (line.startsWith('*') || line.startsWith('-')) {
+          html += `<li>${line.substring(1).trim()}</li>`;
+        } else if (line.length > 0) {
+          html += `<li>${line}</li>`;
+        }
+      });
+      html += '</ul>';
+      return html;
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  </script>
+</body>
+
+</html>

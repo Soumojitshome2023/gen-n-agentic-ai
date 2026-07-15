@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **18 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **19 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -27,6 +27,7 @@ A hands-on collection of **18 projects** that progressively teach you how to bui
   - [16. Researcher-Writer Agent Duo](#16--researcher-writer-agent-duo)
   - [17. LangGraph ReAct Loop](#17--langgraph-react-loop)
   - [18. AI Software Engineer Agent](#18--ai-software-engineer-agent)
+  - [19. Instagram Post Creator Agent](#19--instagram-post-creator-agent)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -57,6 +58,7 @@ This repository is structured as a **learning path** for engineers who want to m
 | Multi-Agent Collaboration      | Researcher-Writer Agent Duo               |
 | Cyclic Agent Loops (ReAct)    | LangGraph ReAct Loop                      |
 | Autonomous Coding Agents      | AI Software Engineer Agent                |
+| Creative Multi-Agent Flow     | Instagram Post Creator Agent              |
 
 ---
 
@@ -623,6 +625,31 @@ node server.js
 
 ---
 
+### 19. 📸 Instagram Post Creator Agent
+
+> **Collaborative multi-agent writer, hashtag strategist, and visual post planner**
+
+Showcases a **Multi-Agent Creative Workflow** built with LangGraph.js. paste a topic and tone, and watch specialized agents (Caption Writer, Hashtag Strategist, Visual Planner, and QA Verifier) collaborate to draft 3 caption variations, compile trending categorized hashtag groups, design matching image visual prompts, and output an engagement potential rating with tips.
+
+- **Type:** Web App (Express + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Model:** `gemini-3.1-flash-lite` (via LangChain integration)
+- **Key Features:**
+  - Parallel-structured multi-agent collaboration graph
+  - Hook-based, Narrative, and Short & Punchy caption models
+  - Volume-segmented hashtags (Broad, Niche, Custom)
+  - Visual layout art prompts
+  - QA grading card and optimization recommendations
+
+```bash
+cd instagram-caption-agent
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
 ## 📋 Prerequisites
 
 - [**Node.js**](https://nodejs.org/) v18 or higher
@@ -734,7 +761,7 @@ PINECONE_API_KEY=your_pinecone_api_key_here
 PINECONE_INDEX=your_pinecone_index_name
 ```
 
-### For LangGraph and Agent projects (`researcher-writer-agent-duo`, `langgraph-react-loop`, & `ai-software-engineer-agent`)
+### For LangGraph and Agent projects (`researcher-writer-agent-duo`, `langgraph-react-loop`, `ai-software-engineer-agent`, & `instagram-caption-agent`)
 
 ```env
 GEMINI_API_KEY=your_google_gemini_api_key_here
