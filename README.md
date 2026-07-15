@@ -452,7 +452,7 @@ A complete educational dashboard project to learn the industry-standard orchestr
 
 - **Type:** Web App (Express + LangChain + HTML frontend)
 - **Entry:** `server.js` → `http://localhost:3000`
-- **Model:** `gemini-2.0-flash`
+- **Model:** `gemini-3.1-flash-lite`
 - **Key Modules:**
   - `@langchain/core` (runnables, prompt templates, message classes)
   - `@langchain/google-genai` (Gemini chat integration)
@@ -475,8 +475,8 @@ A professional RAG (Retrieval-Augmented Generation) document intelligence web ap
 - **Type:** Web App (Express + Multer + LangChain + HTML frontend)
 - **Entry:** `server.js` → `http://localhost:3000`
 - **Models:**
-  - `text-embedding-004` (via LangChain's GoogleGenAIEmbeddings)
-  - `gemini-2.0-flash` (via LangChain's ChatGoogleGenerativeAI)
+  - `gemini-embedding-2` (via LangChain's GoogleGenerativeAIEmbeddings)
+  - `gemini-3.1-flash-lite` (via LangChain's ChatGoogleGenerativeAI)
 - **Key Features:**
   - PDF parser with temporary file cleanup
   - **Recursive Character Text Splitting** to preserve context
