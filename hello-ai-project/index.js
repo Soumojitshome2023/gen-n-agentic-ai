@@ -1,3 +1,7 @@
+// ============================================================================
+// 🤖 Project 1: Hello AI Project
+// ============================================================================
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import "dotenv/config";
 

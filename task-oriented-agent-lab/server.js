@@ -1,5 +1,5 @@
 // ============================================================================
-// 🤖 Task-Oriented Agent Lab (Agentic AI: Autonomy, Planning, & Memory)
+// 🤖 Project 15: Task-Oriented Agent Lab (Agentic AI: Autonomy, Planning, & Memory)
 // ============================================================================
 //
 // WHAT IS AGENTIC AI?

@@ -1,3 +1,7 @@
+// ============================================================================
+// 🤖 Project 8: AI Content Studio
+// ============================================================================
+
 import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { HfInference } from "@huggingface/inference";

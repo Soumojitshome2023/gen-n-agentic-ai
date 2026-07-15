@@ -1,3 +1,7 @@
+// ============================================================================
+// 🤖 Project 9: Pinecone RAG Demo
+// ============================================================================
+
 import { Pinecone } from "@pinecone-database/pinecone";
 import "dotenv/config";
 

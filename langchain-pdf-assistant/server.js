@@ -1,5 +1,5 @@
 // ============================================================================
-// 📄 LangChain AI PDF Assistant (RAG with Pinecone & Citation Tracking)
+// 🤖 Project 14: LangChain PDF Assistant (RAG with Pinecone & Citation Tracking)
 // ============================================================================
 //
 // HOW IT WORKS:
@@ -39,17 +39,17 @@ const upload = multer({ dest: "uploads/" });
 // ==========================================
 const CONFIG = {
   PORT: 3000,
-  
+
   // Model Settings
   CHAT_MODEL: "gemini-3.1-flash-lite",
   EMBEDDING_MODEL: "gemini-embedding-2",
   EMBEDDING_DIMENSION: 1024,
   TEMPERATURE: 0.2,
-  
+
   // Text Chunking Settings
   CHUNK_SIZE: 500,
   CHUNK_OVERLAP: 50,
-  
+
   // Retrieval Settings
   TOP_K: 3,
   MAX_HISTORY: 20,

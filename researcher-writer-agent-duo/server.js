@@ -1,5 +1,5 @@
 // ============================================================================
-// 👥 Researcher-Writer Agent Duo (Multi-Agent Systems with LangGraph.js)
+// 🤖 Project 17: Researcher-Writer Agent Duo (Multi-Agent Systems with LangGraph.js)
 // ============================================================================
 //
 // WHAT IS A MULTI-AGENT SYSTEM?

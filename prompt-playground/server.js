@@ -1,3 +1,7 @@
+// ============================================================================
+// 🤖 Project 2: Prompt Playground
+// ============================================================================
+
 import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import "dotenv/config";

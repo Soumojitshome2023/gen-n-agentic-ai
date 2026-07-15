@@ -1,5 +1,5 @@
 // ============================================================================
-// 🦜 LangChain Orchestration — Chains, Memory, and Agents Demo
+// 🤖 Project 13: LangChain Orchestrator — Chains, Memory, and Agents Demo
 // ============================================================================
 //
 // WHAT IS LANGCHAIN?

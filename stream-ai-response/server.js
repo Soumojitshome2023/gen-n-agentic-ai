@@ -1,4 +1,7 @@
-// server.js
+// ============================================================================
+// 🤖 Project 4: Stream AI Response
+// ============================================================================
+
 import express from 'express';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import "dotenv/config";

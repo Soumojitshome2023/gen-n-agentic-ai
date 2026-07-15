@@ -1,3 +1,7 @@
+// ============================================================================
+// 🤖 Project 7: Hugging Face Image Generator
+// ============================================================================
+
 import { HfInference } from "@huggingface/inference";
 import "dotenv/config";
 import fs from "fs";

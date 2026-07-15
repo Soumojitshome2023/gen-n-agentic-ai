@@ -1,3 +1,7 @@
+// ============================================================================
+// 🤖 Project 3: AI Chatbot Project
+// ============================================================================
+
 import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import "dotenv/config";

@@ -1,5 +1,5 @@
 // ============================================================================
-// 🔧 Gemini Tool Calling — AI Function Calling Demo
+// 🤖 Project 12: Gemini Tool Calling
 // ============================================================================
 //
 // WHAT IS TOOL CALLING (FUNCTION CALLING)?

@@ -1,5 +1,5 @@
 // ============================================================================
-// 🧠 Gemini RAG Project — RAG with In-Memory Vector Store (No External DB)
+// 🤖 Project 10: Gemini RAG Project | RAG with In-Memory Vector Store (No External DB)
 // ============================================================================
 //
 // HOW IT WORKS (RAG Pipeline):

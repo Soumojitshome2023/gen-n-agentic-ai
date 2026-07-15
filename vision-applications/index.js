@@ -1,4 +1,7 @@
-// Gemini Image Analysis Example
+// ============================================================================
+// 🤖 Project 5: Vision Applications
+// ============================================================================
+
 import "dotenv/config";
 import fs from "fs";
 import { GoogleGenerativeAI } from "@google/generative-ai";

@@ -1,5 +1,5 @@
 // ============================================================================
-// 🤖 Project 19: Multimodal Instagram Post Creator Agent
+// 🤖 Project 18: Multimodal Instagram Post Creator Agent
 // ============================================================================
 //
 // WHAT IS THIS?

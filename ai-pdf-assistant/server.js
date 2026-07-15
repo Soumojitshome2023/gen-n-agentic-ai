@@ -1,5 +1,5 @@
 // ============================================================================
-// 📄 AI PDF Assistant — RAG with Pinecone Vector Database
+// 🤖 Project 11: AI PDF Assistant (Mini Project) | RAG with Pinecone Vector Database
 // ============================================================================
 //
 // HOW IT WORKS (RAG Pipeline):
