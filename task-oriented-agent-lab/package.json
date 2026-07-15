@@ -1,0 +1,19 @@
+{
+  "name": "task-oriented-agent-lab",
+  "version": "1.0.0",
+  "description": "Agentic AI Demo: Task-Oriented Agent Lab showcasing autonomy, planning, and memory",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0"
+  }
+}
