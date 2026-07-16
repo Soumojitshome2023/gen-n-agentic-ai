@@ -29,7 +29,7 @@ A hands-on collection of **22 projects** that progressively teach you how to bui
   - [18. Multimodal Instagram Post Creator Agent](#18-multimodal-instagram-post-creator-agent)
   - [19. AI Software Engineer Agent](#19-ai-software-engineer-agent)
   - [20. AI Email Writing Agent](#20-ai-email-writing-agent)
-  - [21. AI Skincare Assistant & Routine Planner](#21-ai-skincare-assistant-routine-planner)
+  - [21. AI Skincare Assistant & Routine Planner](#21-ai-skincare-assistant--routine-planner)
   - [22. Final Enterprise Assistant](#22-final-enterprise-assistant)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
