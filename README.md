@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **21 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **22 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -30,6 +30,7 @@ A hands-on collection of **21 projects** that progressively teach you how to bui
   - [19. AI Software Engineer Agent](#19--ai-software-engineer-agent)
   - [20. AI Email Writing Agent](#20--ai-email-writing-agent)
   - [21. AI Skincare Assistant & Routine Planner](#21-ai-skincare-assistant--routine-planner)
+  - [22. Final Enterprise Assistant](#22-final-enterprise-assistant)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -65,6 +66,7 @@ This repository is structured as a **learning path** for engineers who want to m
 | 19 | Autonomous Coding Agent | AI Software Engineer Agent |
 | 20 | Agent Handoff & Knowledge Base | AI Email Writing Agent |
 | 21 | Multimodal Diagnosis & Safety Audit | AI Skincare Assistant & Routine Planner |
+| 22 | Corporate Portal & Multi-Agent RAG | Final Enterprise Assistant |
 
 ---
 
@@ -215,6 +217,15 @@ Generative AI & Agentic AI for Engineers/
 │   └── package.json
 │
 ├── ai-skincare-agent/             # 🧴 Project 21 — AI Skincare Assistant and Routine Planner
+│   ├── server.js
+│   ├── public/
+│   │   ├── index.html
+│   │   └── style.css
+│   ├── data.json
+│   ├── .env
+│   └── package.json
+│
+├── final-enterprise-assistant/    # 💼 Project 22 — Corporate Single-Sign-On Multi-Agent Portal
 │   ├── server.js
 │   ├── public/
 │   │   ├── index.html
@@ -730,7 +741,7 @@ An agentic dashboard designed for daily skin-health management. The app accepts 
 
 - **Type:** Web App (Express + Multer + HTML frontend)
 - **Entry:** `server.js` → `http://localhost:3001`
-- **Model:** `gemini-1.5-flash`
+- **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - File-based persistence (`data.json`) for daily tracking
   - Multimodal Vision Analysis (Face concerns & Product ingredient label scanning)
@@ -743,6 +754,33 @@ cd ai-skincare-agent
 npm install
 node server.js
 # Open http://localhost:3001
+```
+
+---
+
+### 22. 💼 Final Enterprise Assistant
+
+> **Comprehensive corporate-grade assistant portal with SSO, multi-agent LangGraph workflow, database roster, calendar scheduling, and RAG knowledge wiki**
+
+A unified interface for corporate teams to interact with internal APIs, databases, calendars, and documentation. Features single-sign-on mock authentication and a stateful graph that routes user queries to specialized agents. The **Database Specialist** processes natural language to search/filter employees; the **Calendar Specialist** schedules or lists meetings; and the **Wiki Specialist** runs keyword-semantic searches over policies, persisting all updates back to a central JSON context file (`data.json`).
+
+- **Type:** Web App (Express + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3002`
+- **Model:** `gemini-3.1-flash-lite`
+- **Key Features:**
+  - Mock Single-Sign-On user session & role-based authentication
+  - Executive Router Agent with specialized destination delegation
+  - Natural language querying of the roster database
+  - Automated natural language calendar scheduler
+  - Local corporate wiki knowledge RAG search
+  - Professional, responsive corporate slate-navy portal UI
+  - Persistent company database state (`data.json`)
+
+```bash
+cd final-enterprise-assistant
+npm install
+node server.js
+# Open http://localhost:3002
 ```
 
 ---

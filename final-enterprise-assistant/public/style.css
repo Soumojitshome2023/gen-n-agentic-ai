@@ -1,0 +1,736 @@
+/* ==========================================
+   💼 XYZ Enterprise Assistant Portal Styles
+   ========================================== */
+
+:root {
+  --bg-primary: #f0f2f5;
+  --panel-bg: #ffffff;
+  --border-color: #e4e6eb;
+  
+  --primary-color: #1b365d; /* Dark Corporate Navy */
+  --primary-light: #2c5282;
+  --primary-accent: #3182ce;
+  
+  --text-main: #1a202c;
+  --text-muted: #718096;
+  
+  --success: #38a169; /* Corporate Green */
+  --warning: #dd6b20;
+  --danger: #e53e3e;
+  
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  line-height: 1.5;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================
+   🔒 Login Screen
+   ========================================== */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: radial-gradient(circle, var(--primary-light) 0%, var(--primary-color) 100%);
+  padding: 20px;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.lock-icon {
+  font-size: 32px;
+}
+
+.login-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-top: 8px;
+}
+
+.login-header p {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary-accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 12px;
+}
+
+.btn-login:hover {
+  background-color: var(--primary-light);
+}
+
+.login-hints {
+  margin-top: 24px;
+  background-color: var(--bg-primary);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px dashed rgba(27, 54, 93, 0.3);
+  font-size: 13px;
+  color: #2d3748;
+  line-height: 1.6;
+}
+
+.login-hints p {
+  margin-bottom: 6px;
+}
+
+.login-hints p:last-child {
+  margin-bottom: 0;
+}
+
+.login-hints code {
+  background-color: rgba(27, 54, 93, 0.08);
+  color: var(--primary-color);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: 600;
+}
+
+/* ==========================================
+   💼 Main Portal Screen
+   ========================================== */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100vh;
+}
+
+/* Header */
+.main-header {
+  background-color: var(--primary-color);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  font-size: 28px;
+}
+
+.brand-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.brand-subtitle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.5px;
+}
+
+.session-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.user-role {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-logout {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-logout:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Layout Grid with Sidebar */
+.dashboard-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #ffffff;
+  border-right: 1px solid var(--border-color);
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.nav-btn {
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 12px;
+  text-align: left;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+}
+
+.nav-btn.active {
+  background-color: rgba(49, 130, 206, 0.1);
+  color: var(--primary-accent);
+  font-weight: 600;
+}
+
+.main-panel {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  background-color: var(--bg-primary);
+}
+
+/* Section Switching */
+.dashboard-section {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard-section.active {
+  display: flex;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.panel-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.data-source-badge {
+  background-color: #edf2f7;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* ==========================================
+   💬 Section 1: Chat Assistant Console
+   ========================================== */
+.section-columns {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  height: calc(100vh - 160px);
+}
+
+.chat-area {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-area .panel-header {
+  padding: 16px 20px 12px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: #fafbfc;
+}
+
+.msg {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.msg.system {
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+  border-left: 4px solid #3182ce;
+  max-width: 100%;
+}
+
+.msg.user {
+  background-color: var(--primary-accent);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.msg.model {
+  background-color: #edf2f7;
+  color: var(--text-main);
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}
+
+.msg li {
+  margin-left: 16px;
+  margin-top: 4px;
+}
+
+.prompt-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-top: 1px solid var(--border-color);
+}
+
+.suggestion {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.suggestion:hover {
+  background-color: rgba(49, 130, 206, 0.08);
+  border-color: var(--primary-accent);
+  color: var(--primary-accent);
+}
+
+.chat-input-bar {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  background-color: #fff;
+  border-top: 1px solid var(--border-color);
+}
+
+.chat-input-bar input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid rgba(112, 100, 92, 0.2);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.btn-send {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-send:hover {
+  background-color: var(--primary-light);
+}
+
+.btn-send:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+}
+
+/* Trace Logs column */
+.trace-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.agent-nodes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background-color: #fafbfc;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 16px;
+}
+
+.agent-node {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.agent-node.active {
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 8px rgba(49, 130, 206, 0.2);
+}
+
+.agent-node.completed {
+  border-color: var(--success);
+  background-color: #f0fff4;
+}
+
+.node-icon {
+  font-size: 20px;
+}
+
+.node-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.node-status {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.active .node-status {
+  color: var(--primary-accent);
+  font-weight: 600;
+}
+
+.completed .node-status {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.node-connector {
+  font-size: 12px;
+}
+
+.specialist-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.trace-console {
+  background-color: #1a202c;
+  color: #a0aec0;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 200px;
+}
+
+.console-title {
+  color: #fff;
+  border-bottom: 1px solid #2d3748;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.console-output {
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-line {
+  line-height: 1.4;
+}
+
+/* ==========================================
+   📊 Roster Database Explorer
+   ========================================== */
+.split-view {
+  display: flex;
+  gap: 24px;
+  align-items: start;
+}
+
+.table-container {
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: #f7fafc;
+  padding: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table tr:hover {
+  background-color: #f7fafc;
+}
+
+.dept-badge {
+  background-color: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ==========================================
+   📅 Calendar & Wiki grids
+   ========================================== */
+.events-grid, .wiki-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.calendar-card, .wiki-card {
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendar-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.event-title {
+  font-size: 14px;
+  color: var(--primary-color);
+}
+
+.event-time {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.event-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.event-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 8px;
+}
+
+.wiki-card-title {
+  font-size: 14px;
+  color: var(--primary-light);
+}
+
+.wiki-card-body {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Form layouts */
+.panel {
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 16px;
+  border-left: 3px solid var(--primary-accent);
+  padding-left: 8px;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+input[type="text"], input[type="password"], input[type="date"], input[type="time"], input[type="number"], select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgba(112, 100, 92, 0.2);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: var(--primary-accent);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-light);
+}
+
+/* Footer disclaimer */
+.app-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 10px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color);
+  background-color: #fff;
+  flex-shrink: 0;
+}

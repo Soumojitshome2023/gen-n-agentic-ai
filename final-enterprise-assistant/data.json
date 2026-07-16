@@ -1,0 +1,75 @@
+{
+  "users": [
+    {
+      "username": "admin",
+      "password": "password123",
+      "role": "Executive Admin"
+    },
+    {
+      "username": "jane.doe",
+      "password": "password123",
+      "role": "HR Director"
+    },
+    {
+      "username": "soumojit",
+      "password": "demo123",
+      "role": "Enterprise Architect"
+    }
+  ],
+  "calendar": [
+    {
+      "id": 1,
+      "title": "All-Hands Quarterly Meeting",
+      "date": "2026-07-20",
+      "time": "14:00",
+      "attendees": "All Staff",
+      "description": "Review company performance and upcoming Q3 product goals."
+    },
+    {
+      "id": 2,
+      "title": "Marketing Sprint Planning",
+      "date": "2026-07-17",
+      "time": "10:30",
+      "attendees": "Marketing Team",
+      "description": "Align on social channels and ad budgets."
+    }
+  ],
+  "database": [
+    {
+      "id": 1,
+      "name": "Alice Smith",
+      "role": "Senior Frontend Developer",
+      "department": "Engineering",
+      "salary": 95000,
+      "joinDate": "2024-03-12"
+    },
+    {
+      "id": 2,
+      "name": "Bob Jones",
+      "role": "DevOps Engineer",
+      "department": "Engineering",
+      "salary": 105000,
+      "joinDate": "2023-08-01"
+    },
+    {
+      "id": 3,
+      "name": "Charlie Miller",
+      "role": "HR Generalist",
+      "department": "HR",
+      "salary": 65000,
+      "joinDate": "2025-01-15"
+    }
+  ],
+  "wiki": [
+    {
+      "id": 1,
+      "title": "Office Guest Wi-Fi",
+      "content": "To connect to the corporate guest network, select SSID 'XYZ-Guest'. Open your browser and complete the authentication page. The weekly passcode is 'EnterpriseSpeed2026!'."
+    },
+    {
+      "id": 2,
+      "title": "HR Work-from-Home Policy",
+      "content": "All full-time employees are eligible for hybrid scheduling. You may work remotely up to 3 days per week (Tuesdays and Thursdays are designated core in-office days). Ensure your calendar availability is updated."
+    }
+  ]
+}

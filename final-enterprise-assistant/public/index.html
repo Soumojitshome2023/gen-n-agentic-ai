@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XYZ Enterprise Assistant Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Login Container -->
+  <div id="loginScreen" class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <span class="lock-icon">🔒</span>
+        <h2>XYZ Portal</h2>
+        <p>Enterprise Single Sign-On</p>
+      </div>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="e.g. admin" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-login" id="btnLogin">Sign In</button>
+      </form>
+      <div class="login-hints">
+        <p style="font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--primary-color);">💡 Quick Login Credentials:</p>
+        <p>User: <code>admin</code> | Password: <code>password123</code> (Admin)</p>
+        <p>User: <code>jane.doe</code> | Password: <code>password123</code> (HR)</p>
+        <p>User: <code>soumojit</code> | Password: <code>demo123</code> (Architect)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Application Container -->
+  <div id="appScreen" class="app-container" style="display: none;">
+    <!-- Top Header -->
+    <header class="main-header">
+      <div class="brand">
+        <span class="brand-logo">💼</span>
+        <div>
+          <h1 class="brand-title">XYZ Enterprise</h1>
+          <p class="brand-subtitle">Unified Administrative Co-Pilot</p>
+        </div>
+      </div>
+      <div class="session-info">
+        <div class="user-details">
+          <span class="user-name" id="sessionUsername">admin</span>
+          <span class="user-role" id="sessionUserRole">Executive Admin</span>
+        </div>
+        <button class="btn-logout" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <!-- Sidebar Layout Grid -->
+    <div class="dashboard-layout">
+      <!-- Left: Navigation Sidebar -->
+      <aside class="sidebar">
+        <button class="nav-btn active" id="nav-assistant" onclick="switchSection('assistant')">💬 Assistant Console</button>
+        <button class="nav-btn" id="nav-database" onclick="switchSection('database')">📊 Database Roster</button>
+        <button class="nav-btn" id="nav-calendar" onclick="switchSection('calendar')">📅 Company Calendar</button>
+        <button class="nav-btn" id="nav-wiki" onclick="switchSection('wiki')">📚 Corporate Wiki</button>
+      </aside>
+
+      <!-- Right: Main Section Panel -->
+      <main class="main-panel">
+        
+        <!-- SECTION 1: Assistant Console -->
+        <section class="dashboard-section active" id="section-assistant">
+          <div class="section-columns">
+            <!-- Left Sub-column: Chat -->
+            <div class="chat-area">
+              <div class="panel-header">
+                <h3>💬 AI Co-Pilot Chat</h3>
+                <span class="agent-indicator">Multi-Agent System Online</span>
+              </div>
+              
+              <div class="chat-messages" id="chatBox">
+                <div class="msg system">
+                  Hello! I am your XYZ Enterprise Assistant. I can schedule calendar meetings, query the corporate employee database, search policies in the corporate wiki, or answer general questions. How can I help you today?
+                </div>
+              </div>
+
+              <!-- Quick prompts suggestions -->
+              <div class="prompt-suggestions">
+                <span class="suggestion" onclick="setQuickPrompt('What is the average salary in the Engineering department?')">📊 Average Eng Salary</span>
+                <span class="suggestion" onclick="setQuickPrompt('Schedule quarterly review on 2026-07-22 at 15:00 with Marketing Team')">📅 Schedule Meeting</span>
+                <span class="suggestion" onclick="setQuickPrompt('What is the password for the guest wifi?')">📚 Guest Wifi?</span>
+                <span class="suggestion" onclick="setQuickPrompt('Show me employees in the HR department')">📊 Roster Check</span>
+              </div>
+
+              <form id="chatForm" onsubmit="handleChatSubmit(event)" class="chat-input-bar">
+                <input type="text" id="chatInput" placeholder="Ask assistant to schedule a meeting, analyze employees, or search wiki..." required>
+                <button type="submit" class="btn-send" id="btnSend">Send</button>
+              </form>
+            </div>
+
+            <!-- Right Sub-column: Logs and Trace -->
+            <div class="trace-area">
+              <div class="panel" style="margin-bottom: 0; flex: 1;">
+                <h3 class="panel-title">👔 Agent Delegation Trace</h3>
+                
+                <div class="agent-nodes">
+                  <div class="agent-node" id="node-executive">
+                    <div class="node-icon">👔</div>
+                    <div class="node-details">
+                      <div class="node-title">Executive Router Agent</div>
+                      <div class="node-status" id="status-executive">Idle</div>
+                    </div>
+                  </div>
+
+                  <div class="node-connector">⬇️</div>
+
+                  <div class="specialist-grid">
+                    <div class="agent-node" id="node-database">
+                      <div class="node-icon">📊</div>
+                      <div class="node-details">
+                        <div class="node-title">DB Specialist</div>
+                        <div class="node-status" id="status-database">Idle</div>
+                      </div>
+                    </div>
+                    <div class="agent-node" id="node-calendar">
+                      <div class="node-icon">📅</div>
+                      <div class="node-details">
+                        <div class="node-title">Calendar Specialist</div>
+                        <div class="node-status" id="status-calendar">Idle</div>
+                      </div>
+                    </div>
+                    <div class="agent-node" id="node-wiki">
+                      <div class="node-icon">📚</div>
+                      <div class="node-details">
+                        <div class="node-title">Wiki Specialist (RAG)</div>
+                        <div class="node-status" id="status-wiki">Idle</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="trace-console">
+                  <div class="console-title">🖥️ Server Orchestrator Logs</div>
+                  <div class="console-output" id="traceLogs">Awaiting execution...</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: Database Roster -->
+        <section class="dashboard-section" id="section-database">
+          <div class="panel-header">
+            <h3>📊 Employee Database</h3>
+            <span class="data-source-badge">DB Source: data.json</span>
+          </div>
+
+          <div class="split-view">
+            <!-- Table View -->
+            <div class="table-container" style="flex: 2;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Department</th>
+                    <th>Salary</th>
+                    <th>Join Date</th>
+                  </tr>
+                </thead>
+                <tbody id="dbTableBody"></tbody>
+              </table>
+            </div>
+
+            <!-- Form to Add Employee -->
+            <div class="panel" style="flex: 1; margin-bottom: 0;">
+              <h4 style="margin-bottom: 12px; color: var(--primary-dark);">➕ Add New Employee</h4>
+              <form id="addEmployeeForm" onsubmit="handleAddEmployee(event)">
+                <div class="form-group">
+                  <label for="empName">Full Name</label>
+                  <input type="text" id="empName" required>
+                </div>
+                <div class="form-group">
+                  <label for="empRole">Role</label>
+                  <input type="text" id="empRole" required>
+                </div>
+                <div class="form-group">
+                  <label for="empDept">Department</label>
+                  <select id="empDept" required>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Product">Product</option>
+                    <option value="HR">HR</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Sales">Sales</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="empSalary">Salary (USD)</label>
+                  <input type="number" id="empSalary" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Add Roster Record</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 3: Company Calendar -->
+        <section class="dashboard-section" id="section-calendar">
+          <div class="panel-header">
+            <h3>📅 Company Calendar Events</h3>
+            <span class="data-source-badge">Sync: Active</span>
+          </div>
+
+          <div class="split-view">
+            <!-- Events List -->
+            <div class="events-list-container" style="flex: 2;">
+              <div class="events-grid" id="calendarEventsGrid"></div>
+            </div>
+
+            <!-- Add Event Form -->
+            <div class="panel" style="flex: 1; margin-bottom: 0;">
+              <h4 style="margin-bottom: 12px; color: var(--primary-dark);">📅 Add Calendar Event</h4>
+              <form id="addEventForm" onsubmit="handleAddEvent(event)">
+                <div class="form-group">
+                  <label for="evtTitle">Event Title</label>
+                  <input type="text" id="evtTitle" required>
+                </div>
+                <div class="form-row">
+                  <div class="form-group" style="flex: 1;">
+                    <label for="evtDate">Date</label>
+                    <input type="date" id="evtDate" required>
+                  </div>
+                  <div class="form-group" style="flex: 1;">
+                    <label for="evtTime">Time</label>
+                    <input type="time" id="evtTime" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="evtAttendees">Attendees</label>
+                  <input type="text" id="evtAttendees" placeholder="e.g. Sales Team" required>
+                </div>
+                <div class="form-group">
+                  <label for="evtDesc">Description</label>
+                  <input type="text" id="evtDesc">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Schedule Event</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 4: Corporate Wiki -->
+        <section class="dashboard-section" id="section-wiki">
+          <div class="panel-header">
+            <h3>📚 Corporate Wiki Knowledge Base</h3>
+            <span class="data-source-badge">Pinecone Simulated Store</span>
+          </div>
+
+          <div class="split-view">
+            <!-- Wiki Cards -->
+            <div class="wiki-list-container" style="flex: 2;">
+              <div class="wiki-grid" id="wikiGrid"></div>
+            </div>
+
+            <!-- Add Wiki Document Form -->
+            <div class="panel" style="flex: 1; margin-bottom: 0;">
+              <h4 style="margin-bottom: 12px; color: var(--primary-dark);">📚 Upload New Policy Document</h4>
+              <form id="addWikiForm" onsubmit="handleAddWiki(event)">
+                <div class="form-group">
+                  <label for="wikiTitle">Document Title</label>
+                  <input type="text" id="wikiTitle" required>
+                </div>
+                <div class="form-group">
+                  <label for="wikiContent">Document Content</label>
+                  <textarea id="wikiContent" rows="8" required style="width: 100%; border: 1px solid rgba(112, 100, 92, 0.2); border-radius: 8px; padding: 10px; font-family: inherit; font-size: 14px; outline: none;"></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Publish Article (Sync Vector)</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+
+  </div>
+
+  <script>
+    let activeUser = null;
+
+    // Check auth on load
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedUser = localStorage.getItem("acmeUser");
+      if (savedUser) {
+        activeUser = JSON.parse(savedUser);
+        showDashboard();
+      }
+    });
+
+    // Handle Authentication Login
+    async function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const btnLogin = document.getElementById("btnLogin");
+
+      btnLogin.disabled = true;
+      btnLogin.textContent = "Verifying Single Sign-On...";
+
+      try {
+        const response = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+
+        if (!response.ok) {
+          throw new Error("Invalid username or password.");
+        }
+
+        const data = await response.json();
+        activeUser = data.user;
+        localStorage.setItem("acmeUser", JSON.stringify(data.user));
+        
+        showDashboard();
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btnLogin.disabled = false;
+        btnLogin.textContent = "Sign In";
+      }
+    }
+
+    function handleLogout() {
+      activeUser = null;
+      localStorage.removeItem("acmeUser");
+      document.getElementById("loginScreen").style.display = "flex";
+      document.getElementById("appScreen").style.display = "none";
+    }
+
+    // Switch screens
+    function showDashboard() {
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("appScreen").style.display = "flex";
+
+      document.getElementById("sessionUsername").textContent = activeUser.username;
+      document.getElementById("sessionUserRole").textContent = activeUser.role;
+
+      // Load static data rosters
+      loadDatabase();
+      loadCalendar();
+      loadWiki();
+    }
+
+    // Sidebar navigation toggling
+    function switchSection(sectionId) {
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".dashboard-section").forEach(s => s.classList.remove("active"));
+
+      document.getElementById(`nav-${sectionId}`).classList.add("active");
+      document.getElementById(`section-${sectionId}`).classList.add("active");
+    }
+
+    // Populate Roster Database Table
+    async function loadDatabase() {
+      try {
+        const response = await fetch("/api/database");
+        const data = await response.json();
+        const tbody = document.getElementById("dbTableBody");
+        tbody.innerHTML = "";
+        
+        data.database.forEach(emp => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${emp.id}</td>
+              <td style="font-weight: 500; color: var(--primary-dark);">${emp.name}</td>
+              <td>${emp.role}</td>
+              <td><span class="dept-badge">${emp.department}</span></td>
+              <td>$${emp.salary.toLocaleString()}</td>
+              <td>${emp.joinDate}</td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        console.error("DB load failed:", err);
+      }
+    }
+
+    // Add employee record
+    async function handleAddEmployee(e) {
+      e.preventDefault();
+      const name = document.getElementById("empName").value;
+      const role = document.getElementById("empRole").value;
+      const department = document.getElementById("empDept").value;
+      const salary = document.getElementById("empSalary").value;
+
+      try {
+        const response = await fetch("/api/database", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, role, department, salary })
+        });
+        if (response.ok) {
+          document.getElementById("addEmployeeForm").reset();
+          loadDatabase();
+        }
+      } catch (err) {
+        alert("Failed to add employee: " + err.message);
+      }
+    }
+
+    // Populate Calendar Events Grid
+    async function loadCalendar() {
+      try {
+        const response = await fetch("/api/calendar");
+        const data = await response.json();
+        const grid = document.getElementById("calendarEventsGrid");
+        grid.innerHTML = "";
+
+        data.calendar.forEach(evt => {
+          grid.innerHTML += `
+            <div class="calendar-card">
+              <div class="calendar-card-header">
+                <h4 class="event-title">${evt.title}</h4>
+                <span class="event-time">⏰ ${evt.time}</span>
+              </div>
+              <div class="event-meta">
+                <span>📅 <strong>${evt.date}</strong></span>
+                <span>👥 <strong>${evt.attendees}</strong></span>
+              </div>
+              <p class="event-desc">${evt.description || "No description provided."}</p>
+            </div>
+          `;
+        });
+      } catch (err) {
+        console.error("Calendar load failed:", err);
+      }
+    }
+
+    // Add calendar event
+    async function handleAddEvent(e) {
+      e.preventDefault();
+      const title = document.getElementById("evtTitle").value;
+      const date = document.getElementById("evtDate").value;
+      const time = document.getElementById("evtTime").value;
+      const attendees = document.getElementById("evtAttendees").value;
+      const description = document.getElementById("evtDesc").value;
+
+      try {
+        const response = await fetch("/api/calendar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, date, time, attendees, description })
+        });
+        if (response.ok) {
+          document.getElementById("addEventForm").reset();
+          loadCalendar();
+        }
+      } catch (err) {
+        alert("Failed to schedule: " + err.message);
+      }
+    }
+
+    // Populate Wiki Documents
+    async function loadWiki() {
+      try {
+        const response = await fetch("/api/wiki");
+        const data = await response.json();
+        const grid = document.getElementById("wikiGrid");
+        grid.innerHTML = "";
+
+        data.wiki.forEach(art => {
+          grid.innerHTML += `
+            <div class="wiki-card">
+              <h4 class="wiki-card-title">📚 ${art.title}</h4>
+              <p class="wiki-card-body">${art.content}</p>
+            </div>
+          `;
+        });
+      } catch (err) {
+        console.error("Wiki load failed:", err);
+      }
+    }
+
+    // Add wiki article
+    async function handleAddWiki(e) {
+      e.preventDefault();
+      const title = document.getElementById("wikiTitle").value;
+      const content = document.getElementById("wikiContent").value;
+
+      try {
+        const response = await fetch("/api/wiki", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, content })
+        });
+        if (response.ok) {
+          document.getElementById("addWikiForm").reset();
+          loadWiki();
+        }
+      } catch (err) {
+        alert("Failed to publish document: " + err.message);
+      }
+    }
+
+    // Set Quick Prompt
+    function setQuickPrompt(promptText) {
+      document.getElementById("chatInput").value = promptText;
+    }
+
+    // Helper functions for agent trace indicators
+    function setNodeStatus(nodeId, statusText, className) {
+      const node = document.getElementById(`node-${nodeId}`);
+      const status = document.getElementById(`status-${nodeId}`);
+      
+      node.className = `agent-node ${className}`;
+      status.textContent = statusText;
+    }
+
+    function resetTrace() {
+      setNodeStatus("executive", "Idle", "");
+      setNodeStatus("database", "Idle", "");
+      setNodeStatus("calendar", "Idle", "");
+      setNodeStatus("wiki", "Idle", "");
+      document.getElementById("traceLogs").innerHTML = "Awaiting execution...";
+    }
+
+    function addLogLine(agent, msg) {
+      const consoleOutput = document.getElementById("traceLogs");
+      const time = new Date().toLocaleTimeString();
+      consoleOutput.innerHTML += `<div class="log-line"><strong>[${time}] ${agent}</strong>: ${msg}</div>`;
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    }
+
+    // Submit Assistant Chat Query
+    async function handleChatSubmit(e) {
+      e.preventDefault();
+      resetTrace();
+
+      const chatInput = document.getElementById("chatInput");
+      const btnSend = document.getElementById("btnSend");
+      const chatBox = document.getElementById("chatBox");
+
+      const query = chatInput.value;
+      chatInput.value = "";
+      btnSend.disabled = true;
+      btnSend.textContent = "Querying...";
+
+      // Render user message
+      chatBox.innerHTML += `<div class="msg user">${query}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Executing Executive
+      setNodeStatus("executive", "Running", "active");
+      addLogLine("Executive Agent", "Reading user request context...");
+      await sleep(1000);
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query })
+        });
+
+        if (!response.ok) {
+          throw new Error("API call failed.");
+        }
+
+        const data = await response.json();
+        
+        // Router completes routing
+        setNodeStatus("executive", "Routed", "completed");
+        addLogLine("Executive Agent", `Query routed successfully to **${data.delegation}** specialist.`);
+        await sleep(1000);
+
+        // Highlight specialist node
+        setNodeStatus(data.delegation, "Running", "active");
+        addLogLine(`${data.delegation.toUpperCase()} Agent`, `Processing request tasks...`);
+        await sleep(1500);
+
+        setNodeStatus(data.delegation, "Completed", "completed");
+        addLogLine("System Orchestrator", "Synthesis complete. Render response.");
+
+        // Render AI message
+        chatBox.innerHTML += `<div class="msg model">${formatMarkdown(data.result)}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Auto reload data in background to capture updates (e.g. if meeting scheduled)
+        loadCalendar();
+        loadDatabase();
+
+      } catch (err) {
+        chatBox.innerHTML += `<div class="msg system" style="color: var(--danger);">Enterprise Agent failed: ${err.message}</div>`;
+        resetTrace();
+      } finally {
+        btnSend.disabled = false;
+        btnSend.textContent = "Send";
+      }
+    }
+
+    function formatMarkdown(text) {
+      // Basic translation for markdown headers, bold, bullet points
+      let formatted = text
+        .replace(/### (.*)/g, '<h4>$1</h4>')
+        .replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*)/g, '<li>$1</li>');
+      return formatted;
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  </script>
+</body>
+
+</html>
