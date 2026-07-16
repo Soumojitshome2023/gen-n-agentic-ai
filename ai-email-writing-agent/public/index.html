@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Email Writing Agent & Handoff Simulator</title>
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --panel-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(15, 23, 42, 0.08);
+      --accent-cyan: #0284c7;
+      --accent-green: #059669;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --btn-hover: rgba(15, 23, 42, 0.05);
+      --glow-cyan: rgba(2, 132, 199, 0.08);
+      --glow-green: rgba(5, 150, 105, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.06) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    /* Premium Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 10;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      font-size: 28px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #0f172a 40%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Agent Status Pill */
+    .agent-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--glass-border);
+    }
+
+    .agent-status-badge.main-agent {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: rgba(6, 182, 212, 0.3);
+      color: var(--accent-cyan);
+      box-shadow: 0 0 15px var(--glow-cyan);
+    }
+
+    .agent-status-badge.email-agent {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: var(--accent-green);
+      box-shadow: 0 0 15px var(--glow-green);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    /* Layout Grid */
+    .app-container {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 24px;
+      padding: 24px 40px;
+      flex: 1;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1024px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Common Card Styling */
+    .glass-card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    }
+
+    /* Left Panel: Chat */
+    .chat-panel {
+      height: 720px;
+    }
+
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      line-height: 1.5;
+      font-size: 14px;
+      animation: fadeIn 0.3s ease-out;
+      white-space: pre-wrap;
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(2, 132, 199, 0.16) 100%);
+      border: 1px solid rgba(2, 132, 199, 0.2);
+      color: var(--text-main);
+    }
+
+    .message.assistant {
+      align-self: flex-start;
+      background: rgba(15, 23, 42, 0.03);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+    }
+
+    .message.assistant.email-style {
+      border-left: 3px solid var(--accent-green);
+    }
+
+    .message.system {
+      align-self: center;
+      background: rgba(15, 23, 42, 0.02);
+      border: 1px solid var(--glass-border);
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    /* Typing Loader */
+    .typing-loader {
+      display: none;
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      padding: 12px 18px;
+      border-radius: 12px;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      height: 14px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--text-muted);
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    .dot:nth-child(1) { animation-delay: -0.32s; }
+    .dot:nth-child(2) { animation-delay: -0.16s; }
+
+    /* Suggestions Area */
+    .suggestions-container {
+      padding: 10px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .suggestion-btn {
+      background: rgba(15, 23, 42, 0.02);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .suggestion-btn:hover {
+      background: rgba(15, 23, 42, 0.05);
+      color: var(--text-main);
+      border-color: rgba(15, 23, 42, 0.15);
+    }
+
+    /* Input Area */
+    .input-container {
+      padding: 16px 20px;
+      border-top: 1px solid var(--glass-border);
+      display: flex;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.01);
+    }
+
+    .chat-input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, #0891b2 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.2);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--glass-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--btn-hover);
+    }
+
+    /* Right Panel: Tabs */
+    .tabs-header {
+      display: flex;
+      border-bottom: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 16px;
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .tab-btn.active {
+      color: var(--text-main);
+      border-bottom: 2px solid var(--accent-cyan);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tab-content {
+      flex: 1;
+      padding: 20px;
+      display: none;
+      overflow-y: auto;
+    }
+
+    .tab-content.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Live Preview Tab */
+    .email-container {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .email-field {
+      display: flex;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+      padding-bottom: 8px;
+    }
+
+    .email-field-label {
+      width: 70px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .email-field-value {
+      flex: 1;
+      color: var(--text-main);
+    }
+
+    .email-body {
+      flex: 1;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      line-height: 1.6;
+      color: #334155;
+      font-family: inherit;
+      padding-top: 10px;
+      max-height: 380px;
+    }
+
+    .email-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      color: var(--text-muted);
+      text-align: center;
+      gap: 12px;
+      padding: 40px;
+    }
+
+    .email-placeholder-icon {
+      font-size: 48px;
+      opacity: 0.3;
+    }
+
+    .email-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-approve {
+      flex: 1.5;
+      background: linear-gradient(135deg, var(--accent-green) 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-approve:hover {
+      opacity: 0.9;
+    }
+
+    .btn-approve:disabled {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid var(--glass-border);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    /* Knowledge Base Tab */
+    .kb-editor-title {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .kb-textarea {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 16px;
+      color: var(--text-main);
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+      min-height: 480px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .kb-textarea:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    /* Floating Handoff Overlay */
+    .handoff-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 12px;
+      border: 1px solid var(--accent-cyan);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+      color: #0f172a;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 999;
+      transform: translateY(150%);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .handoff-toast.show {
+      transform: translateY(0);
+    }
+
+    .handoff-toast.back {
+      border-color: var(--accent-green);
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Animations */
+    @keyframes pulse {
+      from { opacity: 0.4; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1.05); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1.0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-container">
+      <span class="logo-icon">🤖</span>
+      <h1>AI Email Writing Agent</h1>
+    </div>
+    <div id="statusBadge" class="agent-status-badge main-agent">
+      <span class="pulse-dot"></span>
+      <span id="statusText">🤖 Main Agent Active</span>
+    </div>
+  </header>
+
+  <!-- App Grid -->
+  <div class="app-container">
+    
+    <!-- Left panel: Chat Interface -->
+    <div class="glass-card chat-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>💬</span> Chat Assistant
+        </div>
+        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="resetChat()">Reset Session</button>
+      </div>
+      
+      <!-- Messages box -->
+      <div id="chatBox" class="chat-box">
+        <div class="message assistant">Hello! I am the Main Agent. How can I help you today? You can ask me general questions or tell me to write/draft an email!</div>
+      </div>
+
+      <!-- Suggestion chips -->
+      <div class="suggestions-container">
+        <button class="suggestion-btn" onclick="sendSuggestion('What are your capabilities?')">What are your capabilities?</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Draft an email to the Principal requesting holiday leave.')">Ask Holiday to Principal</button>
+        <button class="suggestion-btn" onclick="sendSuggestion('Draft an email to Soumojit requesting to be assigned to a new project.')">Ask New Project to Soumojit</button>
+      </div>
+
+      <!-- Typing indicator -->
+      <div id="typingLoader" class="typing-loader">
+        <div class="typing-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+
+      <!-- Input control -->
+      <div class="input-container">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." onkeydown="handleKeydown(event)">
+        <button class="btn btn-primary" onclick="sendUserMsg()">Send</button>
+      </div>
+    </div>
+
+    <!-- Right panel: Tabs (Email Preview & KB Editor) -->
+    <div class="glass-card">
+      <div class="tabs-header">
+        <button id="tabPreview" class="tab-btn active" onclick="switchTab('preview')">
+          <span>✉️</span> Email Preview
+        </button>
+        <button id="tabKb" class="tab-btn" onclick="switchTab('kb')">
+          <span>⚙️</span> Knowledge Base (data.txt)
+        </button>
+      </div>
+
+      <!-- Tab: Email Live Preview -->
+      <div id="contentPreview" class="tab-content active">
+        <div id="emailWrapper" class="email-container" style="display: none;">
+          <div class="email-field">
+            <span class="email-field-label">Subject:</span>
+            <span id="emailSubject" class="email-field-value">Request for Project Extension</span>
+          </div>
+
+          <div id="emailBody" class="email-body">...</div>
+        </div>
+
+        <div id="emailPlaceholder" class="email-placeholder">
+          <div class="email-placeholder-icon">✉️</div>
+          <p>No email draft generated yet.<br>Ask the Main Agent to write an email to trigger the handoff.</p>
+        </div>
+
+        <div class="email-actions">
+          <button id="btnApprove" class="btn btn-approve" onclick="approveDraft()" disabled>
+            <span>✅</span> Approve & Finalize Draft
+          </button>
+          <button id="btnSendMail" class="btn btn-primary" style="display: none; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); flex: 1.5;" onclick="sendMailRedirect()">
+            <span>📨</span> Send Email
+          </button>
+          <button id="btnCopy" class="btn btn-secondary" onclick="copyEmailContent()" disabled>Copy Text</button>
+        </div>
+      </div>
+
+      <!-- Tab: Knowledge Base Editor -->
+      <div id="contentKb" class="tab-content">
+        <div class="kb-editor-title">You can edit the raw <code>data.txt</code> knowledge base content below. The agent will read this content on the fly.</div>
+        <textarea id="kbTextarea" class="kb-textarea" placeholder="Loading knowledge base..."></textarea>
+        <div style="display: flex; justify-content: flex-end;">
+          <button id="btnSaveKb" class="btn btn-primary" onclick="saveKb()">Save Changes</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Toast notifications for agent handoffs -->
+  <div id="handoffToast" class="handoff-toast">
+    <span style="font-size: 20px;">➡️</span>
+    <span id="toastText">Agent Handoff: Handing over to Email Agent...</span>
+  </div>
+
+  <script>
+    // Tab switching
+    function switchTab(tab) {
+      document.getElementById('tabPreview').classList.remove('active');
+      document.getElementById('tabKb').classList.remove('active');
+      document.getElementById('contentPreview').classList.remove('active');
+      document.getElementById('contentKb').classList.remove('active');
+
+      if (tab === 'preview') {
+        document.getElementById('tabPreview').classList.add('active');
+        document.getElementById('contentPreview').classList.add('active');
+      } else {
+        document.getElementById('tabKb').classList.add('active');
+        document.getElementById('contentKb').classList.add('active');
+      }
+    }
+
+    // Load KB content
+    async function loadKb() {
+      try {
+        const response = await fetch('/api/kb');
+        const data = await response.json();
+        document.getElementById('kbTextarea').value = data.content;
+      } catch (error) {
+        console.error('Error loading knowledge base:', error);
+      }
+    }
+
+    // Save KB content
+    async function saveKb() {
+      const textarea = document.getElementById('kbTextarea');
+      const saveBtn = document.getElementById('btnSaveKb');
+      saveBtn.disabled = true;
+      saveBtn.innerText = 'Saving...';
+      try {
+        const response = await fetch('/api/kb', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: textarea.value })
+        });
+        const data = await response.json();
+        if (data.success) {
+          alert('Knowledge base saved successfully! The Email Writing Agent will use these details next.');
+        } else {
+          alert('Failed to save knowledge base: ' + data.error);
+        }
+      } catch (error) {
+        console.error('Error saving knowledge base:', error);
+        alert('An error occurred while saving.');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerText = 'Save Changes';
+      }
+    }
+
+    // UI Helper: update active agent status pill
+    function updateAgentStatus(agent) {
+      const badge = document.getElementById('statusBadge');
+      const text = document.getElementById('statusText');
+      if (agent === 'email') {
+        badge.className = 'agent-status-badge email-agent';
+        text.innerText = '✉️ Email Agent Active';
+      } else {
+        badge.className = 'agent-status-badge main-agent';
+        text.innerText = '🤖 Main Agent Active';
+      }
+    }
+
+    // UI Helper: show handoff toast
+    function showHandoffToast(direction, message) {
+      const toast = document.getElementById('handoffToast');
+      const text = document.getElementById('toastText');
+      
+      if (direction === 'to_email') {
+        toast.className = 'handoff-toast';
+        toast.innerHTML = `<span style="font-size: 20px;">➡️</span> <span><strong>Agent Handoff:</strong> Handing over to Email Agent...</span>`;
+      } else {
+        toast.className = 'handoff-toast back';
+        toast.innerHTML = `<span style="font-size: 20px;">⬅️</span> <span><strong>Agent Handoff:</strong> Returning to Main Agent...</span>`;
+      }
+
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    // UI Helper: Parse and display drafts
+    function updateEmailPreview(draftContent) {
+      const wrapper = document.getElementById('emailWrapper');
+      const placeholder = document.getElementById('emailPlaceholder');
+      const approveBtn = document.getElementById('btnApprove');
+      const copyBtn = document.getElementById('btnCopy');
+
+      if (!draftContent) {
+        wrapper.style.display = 'none';
+        placeholder.style.display = 'flex';
+        approveBtn.disabled = true;
+        copyBtn.disabled = true;
+        return;
+      }
+
+      wrapper.style.display = 'flex';
+      placeholder.style.display = 'none';
+      approveBtn.disabled = false;
+      copyBtn.disabled = false;
+
+      // Extract subject line if output contains "Subject: "
+      let subject = "No Subject Specified";
+      let body = draftContent;
+
+      const subjectRegex = /^Subject:\s*(.*)/i;
+      const match = draftContent.match(subjectRegex);
+      if (match) {
+        subject = match[1];
+        // Strip Subject line from the body
+        body = draftContent.replace(/^Subject:\s*.*\n*/i, '').trim();
+      }
+
+      document.getElementById('emailSubject').innerText = subject;
+      document.getElementById('emailBody').innerText = body;
+
+    }
+
+    // Reset session endpoint
+    async function resetChat() {
+      try {
+        await fetch('/api/reset', { method: 'POST' });
+        
+        const chatBox = document.getElementById('chatBox');
+        chatBox.innerHTML = `<div class="message assistant">Session reset successfully! I am the Main Agent. How can I help you today?</div>`;
+        
+        updateAgentStatus('main');
+        updateEmailPreview(null);
+        
+        // Reset action buttons
+        document.getElementById('btnApprove').style.display = 'flex';
+        document.getElementById('btnApprove').disabled = true;
+        document.getElementById('btnSendMail').style.display = 'none';
+      } catch (error) {
+        console.error('Error resetting chat:', error);
+      }
+    }
+
+    // Function to open default mail client with prefilled details
+    function sendMailRedirect() {
+      const subject = document.getElementById('emailSubject').innerText;
+      const body = document.getElementById('emailBody').innerText;
+      
+      // No recipient specified (user adds it in their mail client)
+      const recipient = "";
+      
+      const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(mailtoUrl, '_blank');
+    }
+
+    // Handle keydown event
+    function handleKeydown(event) {
+      if (event.key === 'Enter') {
+        sendUserMsg();
+      }
+    }
+
+    // Suggestion chips
+    function sendSuggestion(text) {
+      const input = document.getElementById('chatInput');
+      input.value = text;
+      input.focus();
+    }
+
+    // Main user messaging function
+    async function sendUserMsg() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      
+      const chatBox = document.getElementById('chatBox');
+      
+      // Append user message
+      chatBox.innerHTML += `<div class="message user">${text}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Show loader
+      const loader = document.getElementById('typingLoader');
+      loader.style.display = 'block';
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await response.json();
+        
+        loader.style.display = 'none';
+
+        // Render assistant response
+        const assistantClass = data.agent === 'email' ? 'message assistant email-style' : 'message assistant';
+        chatBox.innerHTML += `<div class="class ${assistantClass}">${data.message}</div>`;
+
+        // Handle transitions & handoffs
+        if (data.transition) {
+          if (data.agent === 'email') {
+            // Main -> Email transition
+            showHandoffToast('to_email');
+            updateAgentStatus('email');
+          } else if (data.agent === 'main' && data.isApproved) {
+            // Email -> Main transition
+            showHandoffToast('to_main');
+            updateAgentStatus('main');
+            // Hide the approve button and show the send email button
+            document.getElementById('btnApprove').style.display = 'none';
+            document.getElementById('btnSendMail').style.display = 'flex';
+          }
+        } else {
+          // Sync current status badge
+          updateAgentStatus(data.agent);
+        }
+
+        // Render email preview
+        if (data.draft) {
+          updateEmailPreview(data.draft);
+          // If we transitioned back to main agent, keep draft on screen but show approved toast
+          if (data.isApproved) {
+            chatBox.innerHTML += `<div class="message system">📧 Email Draft Finalized and Approved!</div>`;
+          }
+        }
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch (error) {
+        loader.style.display = 'none';
+        console.error('Chat error:', error);
+        chatBox.innerHTML += `<div class="message system" style="color: #ef4444;">Error connecting to agent server. Make sure the backend is running.</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    }
+
+    // Quick Action: Approve Draft
+    function approveDraft() {
+      // Simulate sending approval message
+      document.getElementById('chatInput').value = "I approve this draft.";
+      sendUserMsg();
+    }
+
+    // Utility: Copy email draft to clipboard
+    function copyEmailContent() {
+      const subject = document.getElementById('emailSubject').innerText;
+      const body = document.getElementById('emailBody').innerText;
+      const fullText = `Subject: ${subject}\n\n${body}`;
+      
+      navigator.clipboard.writeText(fullText).then(() => {
+        alert('Email draft copied to clipboard!');
+      }, (err) => {
+        console.error('Failed to copy text: ', err);
+      });
+    }
+
+    // Initial Load
+    window.onload = () => {
+      loadKb();
+    };
+  </script>
+</body>
+</html>

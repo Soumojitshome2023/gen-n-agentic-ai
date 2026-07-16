@@ -1,0 +1,18 @@
+[PERSONAL_DETAILS]
+Full Name: Soumojit Shome
+Job Title: Senior AI Architect
+Company: Generative Engineering Labs
+Phone: 9062300500
+
+[EMAIL_PREFERENCES]
+Default Tone: Professional, warm, and concise.
+Formatting: Use clean paragraphs. No emojis for corporate emails, but light emojis are fine for internal team emails.
+Sign-off: Best regards, followed by Name, Job Title, and Company.
+Common Recipient Names:
+- CEO: Sarah Jenkins
+- HR Director: Michael Chang
+
+[COMPANY_DETAILS]
+Company Name: Generative Engineering Labs
+Product/Service: Agentic AI workflows, LLM fine-tuning, and enterprise search platforms.
+Core Mission: Empowering engineers to build high-reliability autonomous agents.

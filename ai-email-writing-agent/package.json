@@ -1,0 +1,15 @@
+{
+  "name": "ai-email-writing-agent",
+  "version": "1.0.0",
+  "description": "AI Email Writing Agent with multi-agent handoff",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0"
+  }
+}

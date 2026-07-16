@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **19 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **20 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -28,6 +28,7 @@ A hands-on collection of **19 projects** that progressively teach you how to bui
   - [17. Researcher-Writer Agent Duo](#17--researcher-writer-agent-duo)
   - [18. Multimodal Instagram Post Creator Agent](#18--multimodal-instagram-post-creator-agent)
   - [19. AI Software Engineer Agent](#19--ai-software-engineer-agent)
+  - [20. AI Email Writing Agent](#20--ai-email-writing-agent)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -61,6 +62,7 @@ This repository is structured as a **learning path** for engineers who want to m
 | 17 | Multi-Agent Collaboration | Researcher-Writer Agent Duo |
 | 18 | Creative Multi-Agent Flow | Multimodal Instagram Post Creator Agent |
 | 19 | Autonomous Coding Agent | AI Software Engineer Agent |
+| 20 | Agent Handoff & Knowledge Base | AI Email Writing Agent |
 
 ---
 
@@ -199,6 +201,14 @@ Generative AI & Agentic AI for Engineers/
 │   ├── public/
 │   │   ├── index.html
 │   │   └── style.css
+│   ├── .env
+│   └── package.json
+│
+├── ai-email-writing-agent/        # 📧 Project 20 — AI Email Writing Agent with agent handoff
+│   ├── server.js
+│   ├── public/
+│   │   └── index.html
+│   ├── data.txt
 │   ├── .env
 │   └── package.json
 │
@@ -667,6 +677,33 @@ A collaborative multi-agent workflow built with **LangGraph.js** where specializ
 
 ```bash
 cd ai-software-engineer-agent
+npm install
+node server.js
+# Open http://localhost:3000
+```
+
+---
+
+### 20. 📧 AI Email Writing Agent
+
+> **Dual-agent system with handoff — Main Agent routes email tasks to a specialist Email Writing Agent**
+
+Demonstrates an **Agent Handoff Pattern** where a general-purpose **Main Agent** handles normal queries but automatically detects email-related requests and transfers control to a specialized **Email Writing Agent**. The Email Agent uses a file-based **Knowledge Base** (`data.txt`) to draft professional, personalized emails, supports iterative editing, and finalizes on user approval.
+
+- **Type:** Web App (Express + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3000`
+- **Model:** `gemini-3.1-flash-lite`
+- **Key Features:**
+  - Two-agent architecture: Main Agent + Email Writing Agent
+  - Automatic agent handoff detection (no manual switching)
+  - File-based Knowledge Base (`data.txt`) editable from the UI
+  - Iterative email drafting loop — refine until satisfied
+  - Approval state management (approve/reject draft)
+  - Chat history tracking per agent
+  - Session reset support
+
+```bash
+cd ai-email-writing-agent
 npm install
 node server.js
 # Open http://localhost:3000
