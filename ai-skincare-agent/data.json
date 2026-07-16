@@ -1,0 +1,19 @@
+{
+  "profile": {
+    "skinType": "Combination",
+    "concerns": [
+      "Dullness"
+    ],
+    "budget": "Mid-range",
+    "allergies": ""
+  },
+  "routine": {
+    "am": [],
+    "pm": []
+  },
+  "safetyAudit": {
+    "score": 10,
+    "tips": "No conflicts detected."
+  },
+  "analysisResult": ""
+}
