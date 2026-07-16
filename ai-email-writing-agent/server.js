@@ -1,5 +1,5 @@
 // ============================================================================
-// 🤖 Project 20: AI Email Writing Agent
+// Project 20: AI Email Writing Agent
 // ============================================================================
 
 import express from "express";
@@ -231,7 +231,7 @@ app.post("/api/chat", async (req, res) => {
         `;
 
         const welcomeBackResponse = await callGemini(welcomeBackSystemPrompt, `User approved draft: ${session.currentDraft}`);
-        
+
         session.history.push({ role: "model", text: welcomeBackResponse.message, agent: "main" });
 
         // Save approved draft in logs or clear it for next run, but keep it in UI

@@ -46,7 +46,7 @@ This repository is structured as a **learning path** for engineers who want to m
 |---|---------|---------|
 | 1 | Basic API Integration | Hello AI Project |
 | 2 | Prompt Engineering | Prompt Playground |
-| 3 | Multi-turn Conversations | AI Chatbot Project |
+| 3 | Multi-turn Conversations | Context-Aware AI Chatbot |
 | 4 | Streaming Responses | Stream AI Response |
 | 5 | Vision / Multimodal AI (CLI) | Vision Applications |
 | 6 | Vision / Multimodal AI (Web) | AI Vision Assistant |

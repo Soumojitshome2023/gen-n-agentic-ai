@@ -1,5 +1,5 @@
 // ============================================================================
-// 🤖 Project 14: LangChain PDF Assistant (RAG with Pinecone & Citation Tracking)
+// Project 14: LangChain PDF Assistant (RAG with Pinecone & Citation Tracking)
 // ============================================================================
 //
 // HOW IT WORKS:

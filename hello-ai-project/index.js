@@ -1,5 +1,5 @@
 // ============================================================================
-// 🤖 Project 1: Hello AI Project
+// Project 1: Hello AI Project
 // ============================================================================
 
 import { GoogleGenerativeAI } from "@google/generative-ai";

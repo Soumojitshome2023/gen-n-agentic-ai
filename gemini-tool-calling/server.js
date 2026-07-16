@@ -1,5 +1,5 @@
 // ============================================================================
-// 🤖 Project 12: Gemini Tool Calling
+// Project 12: Gemini Tool Calling
 // ============================================================================
 //
 // WHAT IS TOOL CALLING (FUNCTION CALLING)?
@@ -11,12 +11,12 @@
 // 5. The LLM uses the result to generate a final natural language response
 //
 // HOW IT WORKS:
-// ┌──────────┐    ┌──────────┐    ┌───────────┐    ┌──────────┐    ┌──────────┐
+// ┌──────────┐     ┌──────────┐    ┌───────────┐     ┌──────────┐    ┌──────────┐
 // │  User:   │───▶│  Gemini  │───▶│  App runs │───▶│  Gemini  │───▶│  Final   │
-// │ "Weather │    │ picks    │    │ getWeather│    │ reads    │    │ "It's    │
-// │  in NYC" │    │ tool +   │    │ ("NYC")   │    │ result   │    │  22°C.." │
-// │          │    │ args     │    │ → {22°C}  │    │          │    │          │
-// └──────────┘    └──────────┘    └───────────┘    └──────────┘    └──────────┘
+// │ "Weather │     │ picks    │    │ getWeather│     │ reads    │    │ "It's    │
+// │  in NYC" │     │ tool +   │    │ ("NYC")   │     │ result   │    │  22°C.." │
+// │          │     │ args     │    │ → {22°C}  │     │          │    │          │
+// └──────────┘     └──────────┘    └───────────┘     └──────────┘    └──────────┘
 //
 // WHY TOOL CALLING?
 // - LLMs have a knowledge cutoff and can't access live/private data
@@ -44,7 +44,7 @@ app.use(express.static("public"));
 // ==========================================
 const CONFIG = {
   PORT: 3000,
-  
+
   // Model Settings
   CHAT_MODEL: "gemini-3.1-flash-lite",
 };

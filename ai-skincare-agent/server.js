@@ -1,5 +1,5 @@
 // ============================================================================
-// 🤖 Project 21: AI Skincare Assistant & Routine Planner Agent
+// Project 21: AI Skincare Assistant & Routine Planner Agent
 // ============================================================================
 //
 // WHAT IS THIS?

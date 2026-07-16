@@ -1,17 +1,17 @@
 // ============================================================================
-// 🤖 Project 10: Gemini RAG Project | RAG with In-Memory Vector Store (No External DB)
+// Project 10: Gemini RAG Project | RAG with In-Memory Vector Store (No External DB)
 // ============================================================================
 //
 // HOW IT WORKS (RAG Pipeline):
-// ┌─────────────┐    ┌──────────┐    ┌───────────┐    ┌──────────┐    ┌──────────┐
+// ┌─────────────┐    ┌──────────┐     ┌───────────┐     ┌──────────┐    ┌──────────┐
 // │ Upload PDF  │───▶│ Extract  │───▶│  Chunk    │───▶│ Embed    │───▶│ Store in │
-// │             │    │  Text    │    │  Text     │    │ (Gemini) │    │  Memory  │
-// └─────────────┘    └──────────┘    └───────────┘    └──────────┘    └──────────┘
+// │             │    │  Text    │     │  Text     │     │ (Gemini) │    │  Memory  │
+// └─────────────┘    └──────────┘     └───────────┘     └──────────┘    └──────────┘
 //
-// ┌─────────────┐    ┌──────────┐    ┌───────────┐    ┌──────────┐    ┌──────────┐
-// │ User Asks   │───▶│ Embed    │───▶│  Cosine   │───▶│ Build    │───▶│ Gemini   │
-// │ Question    │    │ Question │    │ Similarity│    │ RAG Prompt│   │ Answer   │
-// └─────────────┘    └──────────┘    └───────────┘    └──────────┘    └──────────┘
+// ┌─────────────┐    ┌──────────┐     ┌───────────┐     ┌───────────┐    ┌──────────┐
+// │ User Asks   │───▶│ Embed    │───▶│  Cosine   │───▶│ Build     │───▶│ Gemini   │
+// │ Question    │    │ Question │     │ Similarity│     │ RAG Prompt│    │ Answer   │
+// └─────────────┘    └──────────┘     └───────────┘     └───────────┘    └──────────┘
 //
 // WHAT IS RAG?
 // RAG (Retrieval-Augmented Generation) is a technique where we:
@@ -54,16 +54,16 @@ const upload = multer({ dest: "uploads/" });
 // ==========================================
 const CONFIG = {
   PORT: 3000,
-  
+
   // Model Settings
   CHAT_MODEL: "gemini-3.1-flash-lite",
   EMBEDDING_MODEL: "gemini-embedding-2",
   EMBEDDING_DIMENSION: 512,           // Custom dimension matching project preference
-  
+
   // Text Chunking Settings
   CHUNK_SIZE: 500,
   CHUNK_OVERLAP: 50,
-  
+
   // Retrieval Settings
   TOP_K: 3,
 };
