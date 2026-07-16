@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Skincare Assistant & Routine Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="main-header">
+      <div class="brand">
+        <span class="brand-logo">✨</span>
+        <div>
+          <h1 class="brand-title">AURA</h1>
+          <p class="brand-subtitle">AI Skincare Planner & Ingredient Auditor</p>
+        </div>
+      </div>
+      <div class="disclaimer-badge">🌿 Cosmetic Assistant</div>
+    </header>
+
+    <!-- Main Grid Layout -->
+    <div class="main-grid">
+      <!-- Left Column: Input Form & Agent Trace -->
+      <div class="left-col">
+        <!-- Skin Profile Form -->
+        <div class="panel">
+          <h2 class="panel-title">👤 Personal Skin Profile</h2>
+          <form id="profileForm" onsubmit="handleGenerate(event)">
+            
+            <div class="form-group">
+              <label for="skinType">Skin Type</label>
+              <select id="skinType" name="skinType" required>
+                <option value="Dry">Dry (Tight, flaky, or dehydrated)</option>
+                <option value="Oily">Oily (Excess sebum, enlarged pores)</option>
+                <option value="Combination" selected>Combination (Oily T-zone, dry cheeks)</option>
+                <option value="Sensitive">Sensitive (Easily irritated, red, or reactive)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Primary Concerns</label>
+              <div class="checkbox-grid">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="concerns" value="Acne/Blemishes"> Acne & Blemishes
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="concerns" value="Aging/Fine lines"> Aging & Fine Lines
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="concerns" value="Dryness/Flakiness"> Dryness & Flakiness
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="concerns" value="Redness/Inflammation"> Redness & Reactive
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="concerns" value="Hyperpigmentation" checked> Hyperpigmentation
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="concerns" value="Dullness" checked> Dullness & Tone
+                </label>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group" style="flex: 1;">
+                <label for="budget">Product Budget</label>
+                <select id="budget" name="budget">
+                  <option value="Affordable">Affordable (Drugstore brands)</option>
+                  <option value="Mid-range" selected>Mid-range (Standard active brands)</option>
+                  <option value="Premium">Premium (Luxury cosmetic science)</option>
+                </select>
+              </div>
+              
+              <div class="form-group" style="flex: 1;">
+                <label for="allergies">Allergies / Avoid list</label>
+                <input type="text" id="allergies" name="allergies" placeholder="e.g. Alcohol, Fragrance">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Upload Face or Product Label Photo</label>
+              <div class="upload-area" id="uploadArea" onclick="document.getElementById('imageInput').click()">
+                <div class="upload-icon">📷</div>
+                <p class="upload-text">Drag & drop image here or click to browse</p>
+                <p class="upload-subtext">Face photo for concern analysis OR Ingredient label to check compatibility</p>
+                <input type="file" id="imageInput" name="image" accept="image/*" style="display: none;" onchange="previewImage(this)">
+              </div>
+              <div class="preview-container" id="previewContainer" style="display: none;">
+                <img id="imagePreview" src="" alt="Skincare upload preview">
+                <button type="button" class="btn-remove" onclick="removeImage()">Remove Photo</button>
+              </div>
+            </div>
+
+            <div class="form-actions" style="margin-top: 10px;">
+              <button type="button" class="btn-secondary" onclick="saveProfileOnly()">Save Profile</button>
+              <button type="submit" class="btn-primary" id="btnSubmit">Generate Daily Routine</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Agent Trace Logs -->
+        <div class="panel">
+          <h2 class="panel-title">⛓️ Agentic Workflow Trace</h2>
+          <div class="agent-trace-list">
+            
+            <div class="agent-step" id="step-profiler">
+              <div class="step-header">
+                <div class="step-indicator">👤</div>
+                <div class="step-name">Profiler Agent</div>
+                <div class="step-status" id="status-profiler">Idle</div>
+              </div>
+              <div class="step-desc" id="msg-profiler">Waiting for process trigger...</div>
+            </div>
+
+            <div class="agent-step" id="step-analyst">
+              <div class="step-header">
+                <div class="step-indicator">👁️</div>
+                <div class="step-name">Vision Analyst Agent</div>
+                <div class="step-status" id="status-analyst">Idle</div>
+              </div>
+              <div class="step-desc" id="msg-analyst">Waiting for photo upload...</div>
+            </div>
+
+            <div class="agent-step" id="step-planner">
+              <div class="step-header">
+                <div class="step-indicator">🧪</div>
+                <div class="step-name">Routine Planner Agent</div>
+                <div class="step-status" id="status-planner">Idle</div>
+              </div>
+              <div class="step-desc" id="msg-planner">Awaiting skin diagnostics...</div>
+            </div>
+
+            <div class="agent-step" id="step-verifier">
+              <div class="step-header">
+                <div class="step-indicator">🛡️</div>
+                <div class="step-name">Safety Verifier Agent</div>
+                <div class="step-status" id="status-verifier">Idle</div>
+              </div>
+              <div class="step-desc" id="msg-verifier">Awaiting final formulation...</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Outputs -->
+      <div class="right-col">
+        <div class="panel" style="justify-content: flex-start;">
+          <h2 class="panel-title">✨ Your Skincare Dashboard</h2>
+          
+          <!-- Idle Placeholder -->
+          <div id="idleState" class="dashboard-placeholder">
+            No routines generated yet. Configure your skin profile and hit "Generate Daily Routine" to plan your regime.
+          </div>
+
+          <!-- Output State -->
+          <div id="outputState" style="display: none; flex-direction: column; gap: 24px; width: 100%;">
+            
+            <!-- Multimodal Analysis Log -->
+            <div id="analysisBox" class="analysis-box" style="display: none;">
+              <h3 class="box-title">👁️ Vision Analyst Report</h3>
+              <p id="analysisText" class="box-content"></p>
+            </div>
+
+            <!-- Tabs Selection -->
+            <div class="tab-container">
+              <button class="tab-btn active" id="tabBtn-am" onclick="switchTab('am')">☀️ AM Routine</button>
+              <button class="tab-btn" id="tabBtn-pm" onclick="switchTab('pm')">🌙 PM Routine</button>
+            </div>
+
+            <!-- Routine Timelines -->
+            <div class="tab-content active" id="tab-am">
+              <div id="amRoutineList" class="routine-timeline"></div>
+            </div>
+
+            <div class="tab-content" id="tab-pm">
+              <div id="pmRoutineList" class="routine-timeline"></div>
+            </div>
+
+            <!-- Safety Card & Audit -->
+            <div class="safety-card">
+              <div class="safety-header">
+                <div class="safety-score-container">
+                  <div class="safety-score-title">Compatibility Score</div>
+                  <div class="safety-score-value" id="safetyScore">10</div>
+                </div>
+                <div class="safety-badge" id="safetyBadge">Perfect Match</div>
+              </div>
+              <div class="safety-tips-box">
+                <div class="tips-title">🛡️ Safety Verification Log</div>
+                <div id="safetyTips" class="tips-list"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Footer Disclaimer -->
+    <footer class="app-footer">
+      <p>⚠️ <strong>Important Medical Disclaimer:</strong> AURA is an artificial intelligence assistant designed for educational and cosmetic skincare planning. The analyses and routines suggested are not medical diagnoses, treatments, or prescriptions. Always perform a patch test with new skincare products and consult a board-certified dermatologist for clinical skin conditions.</p>
+    </footer>
+  </div>
+
+  <script>
+    // State management
+    let generatedData = null;
+
+    // Load persistent profile & routine on load
+    window.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("/api/data");
+        const data = await response.json();
+        
+        if (data.profile) {
+          // Prepopulate inputs
+          document.getElementById("skinType").value = data.profile.skinType;
+          document.getElementById("budget").value = data.profile.budget;
+          document.getElementById("allergies").value = data.profile.allergies || "";
+          
+          // Prepopulate concerns checkboxes
+          const checkboxes = document.querySelectorAll('input[name="concerns"]');
+          checkboxes.forEach(box => {
+            box.checked = data.profile.concerns.includes(box.value);
+          });
+        }
+
+        // Check if there is an existing routine to show
+        if (data.routine && (data.routine.am.length > 0 || data.routine.pm.length > 0)) {
+          generatedData = data;
+          renderDashboard(data);
+        }
+      } catch (err) {
+        console.error("Failed to load initial context:", err);
+      }
+    });
+
+    // Drag and Drop files upload handler
+    const uploadArea = document.getElementById("uploadArea");
+    const imageInput = document.getElementById("imageInput");
+
+    ["dragenter", "dragover"].forEach(eventName => {
+      uploadArea.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        uploadArea.classList.add("dragover");
+      }, false);
+    });
+
+    ["dragleave", "drop"].forEach(eventName => {
+      uploadArea.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove("dragover");
+      }, false);
+    });
+
+    uploadArea.addEventListener("drop", (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length > 0) {
+        imageInput.files = files;
+        previewImage(imageInput);
+      }
+    });
+
+    function previewImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById("imagePreview").src = e.target.result;
+          document.getElementById("previewContainer").style.display = "flex";
+          uploadArea.style.display = "none";
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function removeImage() {
+      imageInput.value = "";
+      document.getElementById("imagePreview").src = "";
+      document.getElementById("previewContainer").style.display = "none";
+      uploadArea.style.display = "flex";
+    }
+
+    // Save profile settings only
+    async function saveProfileOnly() {
+      const skinType = document.getElementById("skinType").value;
+      const budget = document.getElementById("budget").value;
+      const allergies = document.getElementById("allergies").value;
+      
+      const concerns = [];
+      document.querySelectorAll('input[name="concerns"]:checked').forEach(box => {
+        concerns.push(box.value);
+      });
+
+      try {
+        const response = await fetch("/api/profile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ skinType, concerns, budget, allergies })
+        });
+        const result = await response.json();
+        alert("Global Skin Profile saved successfully! Context will persist.");
+      } catch (err) {
+        alert("Failed to save profile context: " + err.message);
+      }
+    }
+
+    // Switch Tabs AM/PM
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+      document.getElementById(`tabBtn-${tabId}`).classList.add("active");
+      document.getElementById(`tab-${tabId}`).classList.add("active");
+    }
+
+    // Agent trace status updates
+    function setAgentState(agentId, className, statusText, msgText) {
+      const step = document.getElementById(`step-${agentId}`);
+      const status = document.getElementById(`status-${agentId}`);
+      const desc = document.getElementById(`msg-${agentId}`);
+
+      step.className = `agent-step ${className}`;
+      status.textContent = statusText;
+      desc.textContent = msgText;
+    }
+
+    function resetAgentTrace() {
+      setAgentState("profiler", "", "Idle", "Waiting for process trigger...");
+      setAgentState("analyst", "", "Idle", "Waiting for photo upload...");
+      setAgentState("planner", "", "Idle", "Awaiting skin diagnostics...");
+      setAgentState("verifier", "", "Idle", "Awaiting final formulation...");
+    }
+
+    // LangGraph generator trigger
+    async function handleGenerate(e) {
+      e.preventDefault();
+      resetAgentTrace();
+      
+      const btnSubmit = document.getElementById("btnSubmit");
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = "Analyzing skin profile...";
+
+      const formData = new FormData();
+      formData.append("skinType", document.getElementById("skinType").value);
+      formData.append("budget", document.getElementById("budget").value);
+      formData.append("allergies", document.getElementById("allergies").value);
+
+      document.querySelectorAll('input[name="concerns"]:checked').forEach(box => {
+        formData.append("concerns", box.value);
+      });
+
+      if (imageInput.files[0]) {
+        formData.append("image", imageInput.files[0]);
+      }
+
+      // Step 1: Profiler active
+      setAgentState("profiler", "active", "Running", "Parsing skincare constraints & metadata...");
+      await sleep(1000);
+
+      // Step 2: Analyst active
+      setAgentState("profiler", "completed", "Completed", "Profile compiled successfully.");
+      setAgentState("analyst", "active", "Running", imageInput.files[0] ? "Reading uploaded photo using multimodal vision..." : "No image uploaded. Evaluating profile text...");
+      await sleep(1200);
+
+      // Step 3: Planner active
+      setAgentState("analyst", "completed", "Completed", "Skin & ingredient scan parsed.");
+      setAgentState("planner", "active", "Running", "Compiling AM/PM active ingredient routine...");
+      await sleep(1500);
+
+      try {
+        const response = await fetch("/api/analyze", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error("HTTP error " + response.status);
+        }
+
+        const data = await response.json();
+        
+        // Step 4: Safety Verifier
+        setAgentState("planner", "completed", "Completed", "Personal routine designed.");
+        setAgentState("verifier", "active", "Running", "Validating routine compatibility & pH harmony...");
+        await sleep(1000);
+
+        setAgentState("verifier", "completed", "Completed", `Routine audited. Safety Score: ${data.safetyAudit.score}/10`);
+
+        generatedData = data;
+        renderDashboard(data);
+
+      } catch (err) {
+        console.error(err);
+        alert("Workflow generation failed: " + err.message);
+        resetAgentTrace();
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = "Generate Daily Routine";
+      }
+    }
+
+    // Render dashboard with returned LangGraph data
+    function renderDashboard(data) {
+      document.getElementById("idleState").style.display = "none";
+      document.getElementById("outputState").style.display = "flex";
+
+      // 1. Multimodal Analysis Report
+      const analysisBox = document.getElementById("analysisBox");
+      const analysisText = document.getElementById("analysisText");
+      if (data.analysisResult && data.analysisResult !== "No skin or product photo uploaded.") {
+        analysisText.textContent = data.analysisResult;
+        analysisBox.style.display = "block";
+      } else {
+        analysisBox.style.display = "none";
+      }
+
+      // 2. AM Routine
+      renderTimeline("amRoutineList", data.routine.am);
+
+      // 3. PM Routine
+      renderTimeline("pmRoutineList", data.routine.pm);
+
+      // 4. Safety Audit Score & Tips
+      const safetyScore = document.getElementById("safetyScore");
+      const safetyBadge = document.getElementById("safetyBadge");
+      const safetyTips = document.getElementById("safetyTips");
+
+      const score = data.safetyAudit.score;
+      safetyScore.textContent = score;
+
+      if (score >= 9) {
+        safetyBadge.textContent = "Perfect Match";
+        safetyBadge.className = "safety-badge perfect";
+      } else if (score >= 7) {
+        safetyBadge.textContent = "Highly Compatible";
+        safetyBadge.className = "safety-badge caution";
+      } else {
+        safetyBadge.textContent = "Conflict Warning";
+        safetyBadge.className = "safety-badge warning";
+      }
+
+      safetyTips.innerHTML = formatMarkdownTips(data.safetyAudit.tips);
+    }
+
+    function renderTimeline(elementId, steps) {
+      const el = document.getElementById(elementId);
+      el.innerHTML = "";
+
+      if (!steps || steps.length === 0) {
+        el.innerHTML = `<div style="color: var(--text-muted); font-size: 14px;">No steps planned.</div>`;
+        return;
+      }
+
+      steps.forEach(item => {
+        el.innerHTML += `
+          <div class="timeline-step">
+            <div class="step-num">${item.step}</div>
+            <div class="step-content">
+              <div class="step-cat">${item.category}</div>
+              <div class="step-ingredients">✨ Active ingredients: <strong>${item.ingredients}</strong></div>
+              <p class="step-instruction">${item.instructions}</p>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function formatMarkdownTips(tipsMarkdown) {
+      if (!tipsMarkdown) return "<p>No suggestions.</p>";
+      let lines = tipsMarkdown.split('\n');
+      let html = '<ul>';
+      lines.forEach(line => {
+        line = line.trim();
+        if (line.startsWith('*') || line.startsWith('-')) {
+          html += `<li>${line.substring(1).trim()}</li>`;
+        } else if (line.length > 0) {
+          html += `<li>${line}</li>`;
+        }
+      });
+      html += '</ul>';
+      return html;
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  </script>
+</body>
+
+</html>

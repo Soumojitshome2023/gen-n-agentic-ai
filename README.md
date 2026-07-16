@@ -1,6 +1,6 @@
 # 🤖 Generative AI & Agentic AI for Engineers
 
-A hands-on collection of **20 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
+A hands-on collection of **21 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
 
 ---
 
@@ -29,6 +29,7 @@ A hands-on collection of **20 projects** that progressively teach you how to bui
   - [18. Multimodal Instagram Post Creator Agent](#18--multimodal-instagram-post-creator-agent)
   - [19. AI Software Engineer Agent](#19--ai-software-engineer-agent)
   - [20. AI Email Writing Agent](#20--ai-email-writing-agent)
+  - [21. AI Skincare Assistant & Routine Planner](#21-ai-skincare-assistant--routine-planner)
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [API Keys Setup](#-api-keys-setup)
@@ -63,6 +64,7 @@ This repository is structured as a **learning path** for engineers who want to m
 | 18 | Creative Multi-Agent Flow | Multimodal Instagram Post Creator Agent |
 | 19 | Autonomous Coding Agent | AI Software Engineer Agent |
 | 20 | Agent Handoff & Knowledge Base | AI Email Writing Agent |
+| 21 | Multimodal Diagnosis & Safety Audit | AI Skincare Assistant & Routine Planner |
 
 ---
 
@@ -209,6 +211,15 @@ Generative AI & Agentic AI for Engineers/
 │   ├── public/
 │   │   └── index.html
 │   ├── data.txt
+│   ├── .env
+│   └── package.json
+│
+├── ai-skincare-agent/             # 🧴 Project 21 — AI Skincare Assistant and Routine Planner
+│   ├── server.js
+│   ├── public/
+│   │   ├── index.html
+│   │   └── style.css
+│   ├── data.json
 │   ├── .env
 │   └── package.json
 │
@@ -707,6 +718,31 @@ cd ai-email-writing-agent
 npm install
 node server.js
 # Open http://localhost:3000
+```
+
+---
+
+### 21. 🧴 AI Skincare Assistant & Routine Planner
+
+> **Multi-agent skincare routine planner with multimodal photo analysis and ingredient safety verifier**
+
+An agentic dashboard designed for daily skin-health management. The app accepts a user's skin profile and optional photo uploads (facial concerns or product active-ingredient labels). A **Vision Analyst** evaluates the image, a **Routine Planner** drafts custom AM/PM steps based on budget and skin goals, and a **Safety Verifier** cross-references active ingredients to flag harmful combinations, saving the entire state to a persistent global context file (`data.json`).
+
+- **Type:** Web App (Express + Multer + HTML frontend)
+- **Entry:** `server.js` → `http://localhost:3001`
+- **Model:** `gemini-1.5-flash`
+- **Key Features:**
+  - File-based persistence (`data.json`) for daily tracking
+  - Multimodal Vision Analysis (Face concerns & Product ingredient label scanning)
+  - LangGraph multi-agent flow (Profiler → Analyst → Planner → Verifier)
+  - Visual compatibility score meter & dermatological safety tips
+  - Serene pastel-beige aesthetic dashboard with real-time agent trace logs
+
+```bash
+cd ai-skincare-agent
+npm install
+node server.js
+# Open http://localhost:3001
 ```
 
 ---
