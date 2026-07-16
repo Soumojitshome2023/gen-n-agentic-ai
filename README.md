@@ -1,112 +1,112 @@
-# 🤖 Generative AI & Agentic AI for Engineers
+# Generative AI & Agentic AI for Engineers
 
 A hands-on collection of **22 projects** that progressively teach you how to build real-world applications with **Google Gemini**, **Hugging Face**, **Pinecone**, **LangChain**, and **LangGraph** — from your first API call to full-stack AI-powered web apps.
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [Overview](#-overview)
-- [Repository Structure](#-repository-structure)
-- [Projects](#-projects)
-  - [1. Hello AI Project](#1--hello-ai-project)
-  - [2. Prompt Playground](#2--prompt-playground)
-  - [3. AI Chatbot Project](#3--ai-chatbot-project)
-  - [4. Stream AI Response](#4--stream-ai-response)
-  - [5. Vision Applications](#5--vision-applications)
-  - [6. AI Vision Assistant](#6--ai-vision-assistant)
-  - [7. Hugging Face Image Generator](#7--hugging-face-image-generator)
-  - [8. AI Content Studio](#8--ai-content-studio)
-  - [9. Pinecone RAG Demo](#9--pinecone-rag-demo)
-  - [10. Gemini RAG Project](#10--gemini-rag-project)
-  - [11. AI PDF Assistant (Mini Project)](#11--ai-pdf-assistant-mini-project)
-  - [12. Gemini Tool Calling](#12--gemini-tool-calling)
-  - [13. LangChain Orchestrator](#13--langchain-orchestrator)
-  - [14. LangChain PDF Assistant](#14--langchain-pdf-assistant)
-  - [15. Task-Oriented Agent Lab](#15--task-oriented-agent-lab)
-  - [16. LangGraph ReAct Loop](#16--langgraph-react-loop)
-  - [17. Researcher-Writer Agent Duo](#17--researcher-writer-agent-duo)
-  - [18. Multimodal Instagram Post Creator Agent](#18--multimodal-instagram-post-creator-agent)
-  - [19. AI Software Engineer Agent](#19--ai-software-engineer-agent)
-  - [20. AI Email Writing Agent](#20--ai-email-writing-agent)
-  - [21. AI Skincare Assistant & Routine Planner](#21-ai-skincare-assistant--routine-planner)
+- [Overview](#overview)
+- [Repository Structure](#repository-structure)
+- [Projects](#projects)
+  - [1. Hello AI Project](#1-hello-ai-project)
+  - [2. Prompt Playground](#2-prompt-playground)
+  - [3. AI Chatbot Project](#3-ai-chatbot-project)
+  - [4. Stream AI Response](#4-stream-ai-response)
+  - [5. Vision Applications](#5-vision-applications)
+  - [6. AI Vision Assistant](#6-ai-vision-assistant)
+  - [7. Hugging Face Image Generator](#7-hugging-face-image-generator)
+  - [8. AI Content Studio](#8-ai-content-studio)
+  - [9. Pinecone RAG Demo](#9-pinecone-rag-demo)
+  - [10. Gemini RAG Project](#10-gemini-rag-project)
+  - [11. AI PDF Assistant (Mini Project)](#11-ai-pdf-assistant-mini-project)
+  - [12. Gemini Tool Calling](#12-gemini-tool-calling)
+  - [13. LangChain Orchestrator](#13-langchain-orchestrator)
+  - [14. LangChain PDF Assistant](#14-langchain-pdf-assistant)
+  - [15. Task-Oriented Agent Lab](#15-task-oriented-agent-lab)
+  - [16. LangGraph ReAct Loop](#16-langgraph-react-loop)
+  - [17. Researcher-Writer Agent Duo](#17-researcher-writer-agent-duo)
+  - [18. Multimodal Instagram Post Creator Agent](#18-multimodal-instagram-post-creator-agent)
+  - [19. AI Software Engineer Agent](#19-ai-software-engineer-agent)
+  - [20. AI Email Writing Agent](#20-ai-email-writing-agent)
+  - [21. AI Skincare Assistant & Routine Planner](#21-ai-skincare-assistant-routine-planner)
   - [22. Final Enterprise Assistant](#22-final-enterprise-assistant)
-- [Prerequisites](#-prerequisites)
-- [Getting Started](#-getting-started)
-- [API Keys Setup](#-api-keys-setup)
-- [Tech Stack](#-tech-stack)
-- [License](#-license)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [API Keys Setup](#api-keys-setup)
+- [Tech Stack](#tech-stack)
+- [License](#license)
 
 ---
 
-## 🌟 Overview
+## Overview
 
 This repository is structured as a **learning path** for engineers who want to master Generative AI integration. Each project builds upon the concepts of the previous one, covering:
 
 | # | Concept | Project |
 |---|---------|---------|
-| 1 | Basic API Integration | Hello AI Project |
-| 2 | Prompt Engineering | Prompt Playground |
-| 3 | Multi-turn Conversations | Context-Aware AI Chatbot |
-| 4 | Streaming Responses | Stream AI Response |
-| 5 | Vision / Multimodal AI (CLI) | Vision Applications |
-| 6 | Vision / Multimodal AI (Web) | AI Vision Assistant |
-| 7 | Image Generation | Hugging Face Image Generator |
-| 8 | Multi-API Orchestration | AI Content Studio |
-| 9 | Vector Database (CRUD) | Pinecone RAG Demo |
-| 10 | RAG (No External DB) | Gemini RAG Project |
-| 11 | RAG / PDF Q&A with Pinecone | AI PDF Assistant |
-| 12 | Tool / Function Calling | Gemini Tool Calling |
-| 13 | LLM Orchestration (Chains) | LangChain Orchestrator |
-| 14 | RAG with LangChain & Citations | LangChain PDF Assistant |
-| 15 | Agentic AI (Planning & Memory) | Task-Oriented Agent Lab |
-| 16 | Cyclic Agent Loops (ReAct) | LangGraph ReAct Loop |
-| 17 | Multi-Agent Collaboration | Researcher-Writer Agent Duo |
-| 18 | Creative Multi-Agent Flow | Multimodal Instagram Post Creator Agent |
-| 19 | Autonomous Coding Agent | AI Software Engineer Agent |
-| 20 | Agent Handoff & Knowledge Base | AI Email Writing Agent |
-| 21 | Multimodal Diagnosis & Safety Audit | AI Skincare Assistant & Routine Planner |
-| 22 | Corporate Portal & Multi-Agent RAG | Final Enterprise Assistant |
+| 1 | Basic API Integration | [Hello AI Project](./hello-ai-project) |
+| 2 | Prompt Engineering | [Prompt Playground](./prompt-playground) |
+| 3 | Multi-turn Conversations | [AI Chatbot Project](./ai-chatbot-project) |
+| 4 | Streaming Responses | [Stream AI Response](./stream-ai-response) |
+| 5 | Vision / Multimodal AI (CLI) | [Vision Applications](./vision-applications) |
+| 6 | Vision / Multimodal AI (Web) | [AI Vision Assistant](./ai-vision-assistant) |
+| 7 | Image Generation | [Hugging Face Image Generator](./hugging-face-gen) |
+| 8 | Multi-API Orchestration | [AI Content Studio](./ai-content-studio) |
+| 9 | Vector Database (CRUD) | [Pinecone RAG Demo](./pinecone-rag-demo) |
+| 10 | RAG (No External DB) | [Gemini RAG Project](./gemini-rag-project) |
+| 11 | RAG / PDF Q&A with Pinecone | [AI PDF Assistant](./ai-pdf-assistant) |
+| 12 | Tool / Function Calling | [Gemini Tool Calling](./gemini-tool-calling) |
+| 13 | LLM Orchestration (Chains) | [LangChain Orchestrator](./langchain-orchestrator) |
+| 14 | RAG with LangChain & Citations | [LangChain PDF Assistant](./langchain-pdf-assistant) |
+| 15 | Agentic AI (Planning & Memory) | [Task-Oriented Agent Lab](./task-oriented-agent-lab) |
+| 16 | Cyclic Agent Loops (ReAct) | [LangGraph ReAct Loop](./langgraph-react-loop) |
+| 17 | Multi-Agent Collaboration | [Researcher-Writer Agent Duo](./researcher-writer-agent-duo) |
+| 18 | Creative Multi-Agent Flow | [Multimodal Instagram Post Creator Agent](./instagram-caption-agent) |
+| 19 | Autonomous Coding Agent | [AI Software Engineer Agent](./ai-software-engineer-agent) |
+| 20 | Agent Handoff & Knowledge Base | [AI Email Writing Agent](./ai-email-writing-agent) |
+| 21 | Multimodal Diagnosis & Safety Audit | [AI Skincare Assistant & Routine Planner](./ai-skincare-agent) |
+| 22 | Corporate Portal & Multi-Agent RAG | [Final Enterprise Assistant](./final-enterprise-assistant) |
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 Generative AI & Agentic AI for Engineers/
-├── hello-ai-project/              # 🟢 Project 1  — Your first Gemini API call
+├── hello-ai-project/              # Project 1  — Your first Gemini API call
 │   ├── index.js
 │   ├── .env
 │   └── package.json
 │
-├── prompt-playground/             # 🎛️  Project 2  — Prompt, temperature & token experiments
+├── prompt-playground/             # Project 2  — Prompt, temperature & token experiments
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
 │   ├── .env
 │   └── package.json
 │
-├── ai-chatbot-project/            # 💬 Project 3  — Multi-turn conversational chatbot
+├── ai-chatbot-project/            # Project 3  — Multi-turn conversational chatbot
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
 │   ├── .env
 │   └── package.json
 │
-├── stream-ai-response/            # ⚡ Project 4  — Real-time streaming AI responses
+├── stream-ai-response/            # Project 4  — Real-time streaming AI responses
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
 │   ├── .env
 │   └── package.json
 │
-├── vision-applications/           # 👁️  Project 5  — CLI-based image analysis
+├── vision-applications/           # Project 5  — CLI-based image analysis
 │   ├── index.js
 │   ├── test-img.png
 │   ├── .env
 │   └── package.json
 │
-├── ai-vision-assistant/           # 🖼️  Project 6  — Web-based image upload & analysis
+├── ai-vision-assistant/           # Project 6  — Web-based image upload & analysis
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
@@ -114,25 +114,25 @@ Generative AI & Agentic AI for Engineers/
 │   ├── .env
 │   └── package.json
 │
-├── hugging-face-gen/              # 🎨 Project 7  — Text-to-image with FLUX
+├── hugging-face-gen/              # Project 7  — Text-to-image with FLUX
 │   ├── index.js
 │   ├── output.png
 │   ├── .env
 │   └── package.json
 │
-├── ai-content-studio/             # 🚀 Project 8  — Full-stack blog + image generation
+├── ai-content-studio/             # Project 8  — Full-stack blog + image generation
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
 │   ├── .env
 │   └── package.json
 │
-├── pinecone-rag-demo/             # 🌲 Project 9  — Pinecone vector DB CRUD operations
+├── pinecone-rag-demo/             # Project 9  — Pinecone vector DB CRUD operations
 │   ├── index.js
 │   ├── .env
 │   └── package.json
 │
-├── gemini-rag-project/            # 🧠 Project 10 — RAG with in-memory vectors (no external DB)
+├── gemini-rag-project/            # Project 10 — RAG with in-memory vectors (no external DB)
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
@@ -140,7 +140,7 @@ Generative AI & Agentic AI for Engineers/
 │   ├── .env
 │   └── package.json
 │
-├── ai-pdf-assistant/              # 📄 Project 11 — Upload, chunk, index & chat with PDFs
+├── ai-pdf-assistant/              # Project 11 — Upload, chunk, index & chat with PDFs
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
@@ -148,21 +148,21 @@ Generative AI & Agentic AI for Engineers/
 │   ├── .env
 │   └── package.json
 │
-├── gemini-tool-calling/           # 🔧 Project 12 — AI Function Calling with tools
+├── gemini-tool-calling/           # Project 12 — AI Function Calling with tools
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
 │   ├── .env
 │   └── package.json
 │
-├── langchain-orchestrator/        # 🦜 Project 13 — LangChain Chains, Memory & Agents
+├── langchain-orchestrator/        # Project 13 — LangChain Chains, Memory & Agents
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
 │   ├── .env
 │   └── package.json
 │
-├── langchain-pdf-assistant/       # 📄 Project 14 — LangChain + Pinecone RAG with citations
+├── langchain-pdf-assistant/       # Project 14 — LangChain + Pinecone RAG with citations
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
@@ -170,28 +170,28 @@ Generative AI & Agentic AI for Engineers/
 │   ├── .env
 │   └── package.json
 │
-├── task-oriented-agent-lab/       # 🤖 Project 15 — Planning, memory & tool autonomy
+├── task-oriented-agent-lab/       # Project 15 — Planning, memory & tool autonomy
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
 │   ├── .env
 │   └── package.json
 │
-├── langgraph-react-loop/          # 🔁 Project 16 — LangGraph conditional routing agent loop
+├── langgraph-react-loop/          # Project 16 — LangGraph conditional routing agent loop
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
 │   ├── .env
 │   └── package.json
 │
-├── researcher-writer-agent-duo/   # 👥 Project 17 — LangGraph multi-agent collaboration
+├── researcher-writer-agent-duo/   # Project 17 — LangGraph multi-agent collaboration
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
 │   ├── .env
 │   └── package.json
 │
-├── instagram-caption-agent/       # 📸 Project 18 — Multimodal Instagram Post Creator Agent
+├── instagram-caption-agent/       # Project 18 — Multimodal Instagram Post Creator Agent
 │   ├── server.js
 │   ├── public/
 │   │   ├── index.html
@@ -200,7 +200,7 @@ Generative AI & Agentic AI for Engineers/
 │   ├── .env
 │   └── package.json
 │
-├── ai-software-engineer-agent/    # 💻 Project 19 — Multi-agent code analysis & review
+├── ai-software-engineer-agent/    # Project 19 — Multi-agent code analysis & review
 │   ├── server.js
 │   ├── public/
 │   │   ├── index.html
@@ -208,7 +208,7 @@ Generative AI & Agentic AI for Engineers/
 │   ├── .env
 │   └── package.json
 │
-├── ai-email-writing-agent/        # 📧 Project 20 — AI Email Writing Agent with agent handoff
+├── ai-email-writing-agent/        # Project 20 — AI Email Writing Agent with agent handoff
 │   ├── server.js
 │   ├── public/
 │   │   └── index.html
@@ -216,7 +216,7 @@ Generative AI & Agentic AI for Engineers/
 │   ├── .env
 │   └── package.json
 │
-├── ai-skincare-agent/             # 🧴 Project 21 — AI Skincare Assistant and Routine Planner
+├── ai-skincare-agent/             # Project 21 — AI Skincare Assistant and Routine Planner
 │   ├── server.js
 │   ├── public/
 │   │   ├── index.html
@@ -225,7 +225,7 @@ Generative AI & Agentic AI for Engineers/
 │   ├── .env
 │   └── package.json
 │
-├── final-enterprise-assistant/    # 💼 Project 22 — Corporate Single-Sign-On Multi-Agent Portal
+├── final-enterprise-assistant/    # Project 22 — Corporate Single-Sign-On Multi-Agent Portal
 │   ├── server.js
 │   ├── public/
 │   │   ├── index.html
@@ -240,18 +240,19 @@ Generative AI & Agentic AI for Engineers/
 
 ---
 
-## 🚀 Projects
+## Projects
 
 ---
 
-### 1. 🟢 Hello AI Project
+### 1. Hello AI Project
 
 > **Your very first Gemini API call**
 
 A minimal CLI script that sends a prompt to the **Gemini API** and prints the response to the terminal. The perfect starting point to verify your API key and understand the basic request/response cycle.
 
+- **Project Link:** [hello-ai-project](./hello-ai-project)
 - **Type:** CLI Script
-- **Entry:** `node index.js`
+- **Entry:** [index.js](./hello-ai-project/index.js)
 - **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - Single API call to Gemini
@@ -266,19 +267,20 @@ node index.js
 
 ---
 
-### 2. 🎛️ Prompt Playground
+### 2. Prompt Playground
 
 > **Experiment with prompts, temperature & tokens interactively**
 
 A web app that lets you send custom prompts to Gemini while controlling **temperature** and **max output tokens** via sliders. Understand how these parameters affect the style, length, and creativity of responses.
 
+- **Project Link:** [prompt-playground](./prompt-playground)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./prompt-playground/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - Configurable temperature (0.0 – 1.0)
   - Configurable max output tokens
-  - Real-time response display
+  - Clean UI with real-time response display
 
 ```bash
 cd prompt-playground
@@ -289,14 +291,15 @@ node server.js
 
 ---
 
-### 3. 💬 AI Chatbot Project
+### 3. AI Chatbot Project
 
 > **Multi-turn conversational AI**
 
 A chatbot web app that maintains **conversation history** across messages. Gemini remembers context from previous turns, enabling natural back-and-forth dialogue.
 
+- **Project Link:** [ai-chatbot-project](./ai-chatbot-project)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./ai-chatbot-project/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - Persistent chat history via `startChat()` API
@@ -312,14 +315,15 @@ node server.js
 
 ---
 
-### 4. ⚡ Stream AI Response
+### 4. Stream AI Response
 
 > **Real-time token-by-token streaming**
 
 Demonstrates how to stream AI responses from Gemini using **chunked transfer encoding**, so users see the text appear word-by-word instead of waiting for the full response.
 
+- **Project Link:** [stream-ai-response](./stream-ai-response)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./stream-ai-response/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - Server-side streaming via `generateContentStream()`
@@ -335,14 +339,15 @@ node server.js
 
 ---
 
-### 5. 👁️ Vision Applications
+### 5. Vision Applications
 
 > **CLI-based image analysis with Gemini**
 
 A command-line script that reads a local image file, converts it to base64, and sends it to Gemini's **multimodal vision model** for detailed analysis and description.
 
+- **Project Link:** [vision-applications](./vision-applications)
 - **Type:** CLI Script
-- **Entry:** `node index.js`
+- **Entry:** [index.js](./vision-applications/index.js)
 - **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - Local image file reading with `fs`
@@ -357,14 +362,15 @@ node index.js
 
 ---
 
-### 6. 🖼️ AI Vision Assistant
+### 6. AI Vision Assistant
 
 > **Web-based image upload & analysis**
 
 A web app where users can **upload an image** directly from the browser. The backend receives it via Multer, converts it, and sends it to Gemini for a detailed analysis response displayed in the UI.
 
+- **Project Link:** [ai-vision-assistant](./ai-vision-assistant)
 - **Type:** Web App (Express + Multer + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./ai-vision-assistant/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - File upload with Multer middleware
@@ -380,14 +386,15 @@ node server.js
 
 ---
 
-### 7. 🎨 Hugging Face Image Generator
+### 7. Hugging Face Image Generator
 
 > **Text-to-image generation with FLUX**
 
 A CLI script that takes a text prompt and generates a high-quality image using Hugging Face's **FLUX.1-schnell** model, saving the output as a PNG file.
 
+- **Project Link:** [hugging-face-gen](./hugging-face-gen)
 - **Type:** CLI Script
-- **Entry:** `node index.js`
+- **Entry:** [index.js](./hugging-face-gen/index.js)
 - **Model:** `black-forest-labs/FLUX.1-schnell` (Hugging Face Inference)
 - **Key Features:**
   - Text-to-image via Hugging Face Inference API
@@ -402,14 +409,15 @@ node index.js
 
 ---
 
-### 8. 🚀 AI Content Studio
+### 8. AI Content Studio
 
 > **Full-stack blog post and image generation**
 
 Combines **two AI APIs** — Google Gemini for writing blog posts and Hugging Face FLUX for generating matching cover images — into a single content generation pipeline.
 
+- **Project Link:** [ai-content-studio](./ai-content-studio)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./ai-content-studio/server.js) → `http://localhost:3000`
 - **Models:** `gemini-3.1-flash-lite` + `FLUX.1-schnell`
 - **Key Features:**
   - Text content generation with Gemini
@@ -426,14 +434,15 @@ node server.js
 
 ---
 
-### 9. 🌲 Pinecone RAG Demo
+### 9. Pinecone RAG Demo
 
 > **Hands-on Pinecone vector database CRUD operations**
 
 A CLI script demonstrating full **Pinecone vector database operations** — upsert, query, update, and delete. Ideal for understanding how vector databases store and retrieve semantic data before building a full RAG system.
 
+- **Project Link:** [pinecone-rag-demo](./pinecone-rag-demo)
 - **Type:** CLI Script
-- **Entry:** `node index.js`
+- **Entry:** [index.js](./pinecone-rag-demo/index.js)
 - **Key Features:**
   - Pinecone index connection and namespace management
   - Upsert vectors with metadata
@@ -449,14 +458,15 @@ node index.js
 
 ---
 
-### 10. 🧠 Gemini RAG Project
+### 10. Gemini RAG Project
 
 > **RAG pipeline using pure Gemini — no external database needed**
 
-A lightweight RAG system using **Gemini embeddings** and an **in-memory vector store** with cosine similarity search. No Pinecone required — just a Gemini API key. Upload a PDF and the app chunks, embeds, and stores vectors in memory for multi-turn Q&A.
+A lightweight RAG system using **Gemini embeddings** and an **in-memory vector store** with cosine similarity search. No Pinecone required — just a Gemini API key. Upload a PDF and the app chunks, embeds, and stores vectors in memory for Q&A.
 
+- **Project Link:** [gemini-rag-project](./gemini-rag-project)
 - **Type:** Web App (Express + Multer + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./gemini-rag-project/server.js) → `http://localhost:3000`
 - **Models:** `text-embedding-004` + `gemini-2.0-flash`
 - **Key Features:**
   - PDF upload with drag-and-drop
@@ -475,14 +485,15 @@ node server.js
 
 ---
 
-### 11. 📄 AI PDF Assistant (Mini Project)
+### 11. AI PDF Assistant (Mini Project)
 
 > **Upload a PDF, chunk it, index it in Pinecone, and chat with it using RAG**
 
 The capstone mini project bringing together **PDF parsing**, **Gemini embeddings**, **Pinecone vector search**, and **Gemini chat** into a complete RAG pipeline. Upload any PDF and ask questions — the AI retrieves relevant chunks and generates accurate, context-aware answers.
 
+- **Project Link:** [ai-pdf-assistant](./ai-pdf-assistant)
 - **Type:** Web App (Express + Multer + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./ai-pdf-assistant/server.js) → `http://localhost:3000`
 - **Models:** `text-embedding-004` + `gemini-2.0-flash`
 - **Key Features:**
   - PDF upload with drag-and-drop
@@ -503,20 +514,21 @@ node server.js
 
 ---
 
-### 12. 🔧 Gemini Tool Calling
+### 12. Gemini Tool Calling
 
 > **AI Function Calling — LLM decides which tools to use**
 
-Demonstrates Gemini's **function calling** feature where the LLM automatically selects and invokes the correct tool based on a natural language request, uses the result, and forms a final natural language response.
+Demonstrates Gemini's **function calling** feature where the LLM automatically selects and invokes the correct tool based on a natural language request, uses the result, and forms a final response.
 
+- **Project Link:** [gemini-tool-calling](./gemini-tool-calling)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./gemini-tool-calling/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - Tool definition with JSON schema
   - Automatic tool selection by LLM
   - Weather, calculator, and search tool examples
-  - Full request → tool call → result → final answer loop
+  - Outer request → tool call → result → final answer loop
 
 ```bash
 cd gemini-tool-calling
@@ -527,14 +539,15 @@ node server.js
 
 ---
 
-### 13. 🦜 LangChain Orchestrator
+### 13. LangChain Orchestrator
 
 > **LangChain Chains, Memory & Agents demo**
 
 Introduces **LangChain** as an orchestration framework. Demonstrates three core concepts: sequential **Chains**, persistent **Memory**, and dynamic **Agents** that pick tools at runtime.
 
+- **Project Link:** [langchain-orchestrator](./langchain-orchestrator)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./langchain-orchestrator/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite` (via LangChain Google GenAI)
 - **Key Features:**
   - Sequential prompt chaining with `RunnableSequence`
@@ -551,14 +564,15 @@ node server.js
 
 ---
 
-### 14. 📄 LangChain PDF Assistant
+### 14. LangChain PDF Assistant
 
 > **LangChain + Pinecone RAG pipeline with source citations**
 
 A full RAG application built with **LangChain** abstractions — `RecursiveCharacterTextSplitter`, `GoogleGenerativeAIEmbeddings`, and Pinecone. Answers PDF questions with inline source citations like `[Source 1]`.
 
+- **Project Link:** [langchain-pdf-assistant](./langchain-pdf-assistant)
 - **Type:** Web App (Express + Multer + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./langchain-pdf-assistant/server.js) → `http://localhost:3000`
 - **Models:** `text-embedding-004` + `gemini-2.0-flash`
 - **Key Features:**
   - LangChain `RecursiveCharacterTextSplitter` for smart chunking
@@ -576,14 +590,15 @@ node server.js
 
 ---
 
-### 15. 🤖 Task-Oriented Agent Lab
+### 15. Task-Oriented Agent Lab
 
 > **Agentic AI: Autonomy, Planning & Memory**
 
-Introduces **Agentic AI** — AI that acts with independence. The agent accepts a high-level goal, decomposes it into a step-by-step plan, executes each step using tools, stores results in memory, and uses past outputs to inform future steps.
+Introduces **Agentic AI** — AI that acts with independence. The agent accepts a goal, decomposes it into a task plan, executes each step using tools, stores results in memory, and uses past outputs to inform future steps.
 
+- **Project Link:** [task-oriented-agent-lab](./task-oriented-agent-lab)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./task-oriented-agent-lab/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - Goal decomposition into structured task plans
@@ -601,14 +616,15 @@ node server.js
 
 ---
 
-### 16. 🔁 LangGraph ReAct Loop
+### 16. LangGraph ReAct Loop
 
 > **LangGraph conditional routing agent loop**
 
 Implements a **ReAct (Reasoning + Acting)** agent loop using LangGraph's conditional edge routing. The agent alternates between Thinking, Tool Calling, and Observing in a cyclic loop until it arrives at a final answer.
 
+- **Project Link:** [langgraph-react-loop](./langgraph-react-loop)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./langgraph-react-loop/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite`
 - **Graph Flow:** `[Start] → Agent Node → (tool call?) → Tool Node → Agent Node → ... → [End]`
 - **Key Features:**
@@ -627,14 +643,15 @@ node server.js
 
 ---
 
-### 17. 👥 Researcher-Writer Agent Duo
+### 17. Researcher-Writer Agent Duo
 
 > **Multi-agent collaboration with LangGraph.js**
 
 A **Multi-Agent System** built with LangGraph.js where two specialized agents collaborate: a **Researcher Agent** gathers and summarizes information on a topic, then a **Writer Agent** transforms that research into a polished article.
 
+- **Project Link:** [researcher-writer-agent-duo](./researcher-writer-agent-duo)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./researcher-writer-agent-duo/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite` (via LangChain)
 - **Graph Flow:** `[Start] → Researcher Node → Writer Node → [End]`
 - **Key Features:**
@@ -652,14 +669,15 @@ node server.js
 
 ---
 
-### 18. 📸 Multimodal Instagram Post Creator Agent
+### 18. Multimodal Instagram Post Creator Agent
 
 > **Multimodal multi-agent Instagram caption, hashtag & visual planner**
 
 A creative **Multi-Agent Workflow** built with LangGraph.js. Upload one or more images and select a tone — a **Vision Analyst** automatically describes the photo content, then a **Caption Writer**, **Hashtag Strategist**, **Visual Planner**, and **QA Verifier** collaborate to produce captions, categorized hashtags, a visual concept prompt, and an engagement score.
 
+- **Project Link:** [instagram-caption-agent](./instagram-caption-agent)
 - **Type:** Web App (Express + Multer + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./instagram-caption-agent/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite` (via LangChain Google GenAI)
 - **Graph Flow:** `Analyst → Writer → Strategist → Planner → Verifier`
 - **Key Features:**
@@ -681,14 +699,15 @@ node server.js
 
 ---
 
-### 19. 💻 AI Software Engineer Agent
+### 19. AI Software Engineer Agent
 
 > **Multi-agent code analysis, auditing & correction**
 
 A collaborative multi-agent workflow built with **LangGraph.js** where specialized agents work in sequence. An **Analyzer**, **Auditor**, and **Optimizer** each review submitted code, and a final **QA Verifier** synthesizes findings into a complete report and corrected version.
 
+- **Project Link:** [ai-software-engineer-agent](./ai-software-engineer-agent)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./ai-software-engineer-agent/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite` (via LangChain)
 - **Key Features:**
   - LangGraph pipeline: Analyzer → Auditor → Optimizer → QA Verifier
@@ -706,14 +725,15 @@ node server.js
 
 ---
 
-### 20. 📧 AI Email Writing Agent
+### 20. AI Email Writing Agent
 
 > **Dual-agent system with handoff — Main Agent routes email tasks to a specialist Email Writing Agent**
 
 Demonstrates an **Agent Handoff Pattern** where a general-purpose **Main Agent** handles normal queries but automatically detects email-related requests and transfers control to a specialized **Email Writing Agent**. The Email Agent uses a file-based **Knowledge Base** (`data.txt`) to draft professional, personalized emails, supports iterative editing, and finalizes on user approval.
 
+- **Project Link:** [ai-email-writing-agent](./ai-email-writing-agent)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3000`
+- **Entry:** [server.js](./ai-email-writing-agent/server.js) → `http://localhost:3000`
 - **Model:** `gemini-3.1-flash-lite`
 - **Key Features:**
   - Two-agent architecture: Main Agent + Email Writing Agent
@@ -733,15 +753,16 @@ node server.js
 
 ---
 
-### 21. 🧴 AI Skincare Assistant & Routine Planner
+### 21. AI Skincare Assistant & Routine Planner
 
 > **Multi-agent skincare routine planner with multimodal photo analysis and ingredient safety verifier**
 
 An agentic dashboard designed for daily skin-health management. The app accepts a user's skin profile and optional photo uploads (facial concerns or product active-ingredient labels). A **Vision Analyst** evaluates the image, a **Routine Planner** drafts custom AM/PM steps based on budget and skin goals, and a **Safety Verifier** cross-references active ingredients to flag harmful combinations, saving the entire state to a persistent global context file (`data.json`).
 
+- **Project Link:** [ai-skincare-agent](./ai-skincare-agent)
 - **Type:** Web App (Express + Multer + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3001`
-- **Model:** `gemini-3.1-flash-lite`
+- **Entry:** [server.js](./ai-skincare-agent/server.js) → `http://localhost:3001`
+- **Model:** `gemini-1.5-flash`
 - **Key Features:**
   - File-based persistence (`data.json`) for daily tracking
   - Multimodal Vision Analysis (Face concerns & Product ingredient label scanning)
@@ -758,15 +779,16 @@ node server.js
 
 ---
 
-### 22. 💼 Final Enterprise Assistant
+### 22. Final Enterprise Assistant
 
 > **Comprehensive corporate-grade assistant portal with SSO, multi-agent LangGraph workflow, database roster, calendar scheduling, and RAG knowledge wiki**
 
 A unified interface for corporate teams to interact with internal APIs, databases, calendars, and documentation. Features single-sign-on mock authentication and a stateful graph that routes user queries to specialized agents. The **Database Specialist** processes natural language to search/filter employees; the **Calendar Specialist** schedules or lists meetings; and the **Wiki Specialist** runs keyword-semantic searches over policies, persisting all updates back to a central JSON context file (`data.json`).
 
+- **Project Link:** [final-enterprise-assistant](./final-enterprise-assistant)
 - **Type:** Web App (Express + HTML frontend)
-- **Entry:** `server.js` → `http://localhost:3002`
-- **Model:** `gemini-3.1-flash-lite`
+- **Entry:** [server.js](./final-enterprise-assistant/server.js) → `http://localhost:3002`
+- **Model:** `gemini-1.5-flash`
 - **Key Features:**
   - Mock Single-Sign-On user session & role-based authentication
   - Executive Router Agent with specialized destination delegation
@@ -785,7 +807,7 @@ node server.js
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 - [**Node.js**](https://nodejs.org/) v18 or higher
 - [**npm**](https://www.npmjs.com/) (comes with Node.js)
@@ -795,7 +817,7 @@ node server.js
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
 1. **Clone the repository**
 
@@ -816,7 +838,7 @@ node server.js
    npm install
    ```
 
-4. **Set up environment variables** (see [API Keys Setup](#-api-keys-setup))
+4. **Set up environment variables** (see [API Keys Setup](#api-keys-setup))
 
 5. **Run the project**
 
@@ -831,7 +853,7 @@ node server.js
 
 ---
 
-## 🔑 API Keys Setup
+## API Keys Setup
 
 Each project requires a `.env` file in its directory. Create one based on the project's needs:
 
@@ -879,7 +901,7 @@ PINECONE_INDEX=your_index_name
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Technology | Purpose |
 |-----------|---------|
@@ -898,7 +920,7 @@ PINECONE_INDEX=your_index_name
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **ISC License**.
 
